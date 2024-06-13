@@ -12,20 +12,52 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 </head>
 
-<body>
-  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Go to full sidebar</button>
+<body class="bg-body-secondary">
+  <header class="mb-5">
+    <button class="btn btn-primary m-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+      aria-controls="offcanvasScrolling">Go to full sidebar</button>
 
-  <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Offcanvas with body scrolling</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+      id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Wesley Poth - Software Developer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+
+      </div>
+      <div class="offcanvas-body bg-body-secondary">
+        <ul class="list-group ">
+          <li class="list-group-item bg-dark"><a class="text-info" href="/index.html">Home</a></li>
+          <li class="list-group-item bg-dark"><a class="text-info" href="/html/about.html">About me</a> </li>
+          <li class="list-group-item bg-dark"><a class="text-info" href="/html/projects.html">Projects</a></li>
+          <li class="list-group-item bg-dark"><a class="text-info" href="/html/school.html">School</a></li>
+          <li class="list-group-item bg-dark"><a class="text-info" href="/html/hobbys.html">Hobby</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="offcanvas-body">
-      <p>Try scrolling the rest of the page to see this option in action.</p>
+  </header>
+  <main>
+    <div class="container-fluid m-3">
+      <div class="row-cols-6 d-flex justify-content-center align-items-center g-2">
+        <div class="col fw-bold mx-3">
+          <h2>Project overview</h2>
+        </div>
+        <div class="col fw-bold mx-3">
+          <h2>About Overview</h2>
+        </div>
+      </div>
+      <div class="row-cols-6 d-flex justify-content-center align-items-center g-2">
+        <div class="col fw-bold mx-3">
+          <h2>Hobby overview</h2>
+        </div>
+        <div class="col fw-bold mx-3">
+          <h2>school Overview</h2>
+        </div>
+      </div>
+
+
     </div>
-  </div>
-  <main></main>
+
+  </main>
   <footer>
     <!-- place footer here -->
   </footer>
