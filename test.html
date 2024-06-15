@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+    }
+    .bg-green {
+      background-color: #28a745;
+    }
+    .text-green {
+      color: #28a745;
+    }
+    .landing-section {
+      background-image: url('/img/forest_pofo.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="bg-secondary text-white text-center py-4">
+    <h1>My Portfolio</h1>
+    <nav>
+      <a href="#about" class="text-white mx-3">About</a>
+      <a href="#projects" class="text-white mx-3">Projects</a>
+      <a href="#contact" class="text-white mx-3">Contact</a>
+      <a href="#school" class="text-white mx-3">School</a>
+    </nav>
+  </header>
+
+  <!-- Landing Section -->
+  <section class="landing-section">
+    <div>
+      <h1>Welcome to My Portfolio</h1>
+      <p class="lead">Discover my work and projects</p>
+      <a href="#about" class="btn btn-green">Learn More</a>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <main class="container my-5">
+    <!-- About Section -->
+    <section id="about" class="mb-5">
+      <h2 class="text-green">About</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="mb-5">
+      <h2 class="text-green">Projects</h2>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="card bg-green text-white">
+            <div class="card-body">
+              <h5 class="card-title">Project 1</h5>
+              <p class="card-text">Brief description of project 1.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card bg-green text-white">
+            <div class="card-body">
+              <h5 class="card-title">Project 2</h5>
+              <p class="card-text">Brief description of project 2.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card bg-green text-white">
+            <div class="card-body">
+              <h5 class="card-title">Project 3</h5>
+              <p class="card-text">Brief description of project 3.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="mb-5">
+      <h2 class="text-green">Contact</h2>
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-green">Submit</button>
+      </form>
+    </section>
+
+    <!-- School Section -->
+    <section id="school">
+      <h2 class="text-green">School</h2>
+      <p>Details about educational background.</p>
+    </section>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
