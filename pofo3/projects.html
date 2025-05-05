@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Wesley</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cantata+One&display=swap" rel="stylesheet" />
+
+    <!-- Animate.css + GSAP -->
+    <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.2/dist/Observer.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.sass">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cantata One', serif;
+            margin: 0;
+        }
+
+
+        .horizontal-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .horizontal-panel {
+            min-width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .horizontal-panel h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .horizontal-panel p {
+            max-width: 600px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="relative min-h-screen bg-gradient-to-b from-slate-900 to-cyan-500 text-white overflow-x-hidden">
+
+    <!-- Background Glow Element -->
+    <div class="absolute top-0 left-0 w-full h-full z-[-1] pointer-events-none overflow-hidden">
+        <div id="glowCircle"
+            class="w-96 h-96 bg-cyan-400 opacity-30 blur-3xl rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-100">
+        </div>
+    </div>
+
+    <header class="py-6 shadow-md">
+        <nav aria-label="Main Navigation">
+            <ul class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold">
+                <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
+                <li><a href="#about" class="hover:text-cyan-300 transition-colors">About Me</a></li>
+                <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
+                <li><a href="#cv" class="hover:text-cyan-300 transition-colors">CV</a></li>
+                <li><a href="#contact" class="hover:text-cyan-300 transition-colors">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- New horizontal scroll section -->
+    <div class="horizontal-container">
+        <div class="horizontal-panel">
+            <h1>💻 Project 1: Portfolio Website</h1>
+            <p>A modern personal portfolio built using Tailwind CSS, responsive layout, and smooth animations.</p>
+        </div>
+        <div class="horizontal-panel">
+            <h1>🛒 Project 2: Webshop</h1>
+            <p>PHP and MySQL-powered e-commerce platform with product filtering and shopping cart functionality.</p>
+        </div>
+        <div class="horizontal-panel">
+            <h1>📱 Project 3: Mobile UI</h1>
+            <p>A clean mobile app prototype created with Flutter showcasing a to-do app and calendar integration.</p>
+        </div>
+        <div class="horizontal-panel">
+            <h1>🎬 Project 4: Anime Edits</h1>
+            <p>Creative After Effects/CapCut edits syncing anime footage to music for engaging short-form content.</p>
+        </div>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const container = document.querySelector(".horizontal-container");
+        const panels = gsap.utils.toArray(".horizontal-panel");
+        const glow = document.getElementById("glowCircle");
+
+        // Horizontal scroll animation
+        const scrollTween = gsap.to(container, {
+            xPercent: -100 * (panels.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: container,
+                pin: true,
+                scrub: 1,
+                snap: 1 / (panels.length - 1),
+                end: () => "+=" + container.offsetWidth
+            }
+        });
+
+        // Glow movement and effect
+        ScrollTrigger.create({
+            trigger: container,
+            start: "top top",
+            end: () => "+=" + container.offsetWidth,
+            scrub: true,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const containerWidth = container.scrollWidth;
+                const scrollX = containerWidth * progress;
+
+                // Move the glow horizontally while keeping it centered
+                gsap.to(glow, {
+                    x: scrollX + window.innerWidth / 2 - glow.offsetWidth / 2, // Centered offset
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+
+                // Change the color based on scroll progress
+                const colorFactor = progress; // A value between 0 and 1
+                const newColor = `rgb(${Math.floor(0 + (255 * colorFactor))}, ${Math.floor(200 - (100 * colorFactor))}, 200)`;
+
+                gsap.to(glow, {
+                    backgroundColor: newColor,
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+
+                // Scale the glow based on progress
+                const totalPanels = panels.length;
+                const segment = 1 / (totalPanels - 1);
+                let closest = 0;
+                let minDiff = 1;
+
+                for (let i = 0; i < totalPanels; i++) {
+                    const center = i * segment;
+                    const diff = Math.abs(progress - center);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closest = i;
+                    }
+                }
+
+                // Adjust the scale of the glow to make it smaller or larger based on the scroll
+                const scale = 0.6 + (1 - minDiff * (totalPanels - 1)) * 0.6;
+                gsap.to(glow, {
+                    scale: Math.max(scale, 0.8), // Ensure it doesn't shrink too much
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+            }
+        });
+    </script>
+
+    <script src="js/animate.js"></script>
+</body>
+
+</html>
