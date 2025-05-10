@@ -1,4 +1,4 @@
-// color theme swapper
+// Color theme swapper
 
 // Set the selected theme based on localStorage or default theme
 window.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +20,6 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-
 // Function to apply the theme class to the body
 function setTheme(theme) {
   // Remove all theme-related classes
@@ -38,7 +37,7 @@ function setTheme(theme) {
   switch (theme) {
     case 'default':
       gsap.to(document.body, {
-        background: 'linear-gradient(to bottom, #1e293b 0%, #006f7f 100%)', // custom gradient colors for default
+        background: 'linear-gradient(to bottom, #1e293b 0%, #006f7f 100%)',
         duration: 1.5,
         ease: 'power2.inOut',
         onStart: () => animateGradientFromCircle(glowCircle),
@@ -46,7 +45,7 @@ function setTheme(theme) {
       break;
     case 'theme2':
       gsap.to(document.body, {
-        background: 'linear-gradient(to bottom, #5f4b8b 0%, #1e3a8a 100%)', // custom gradient colors for theme2
+        background: 'linear-gradient(to bottom, #5f4b8b 0%, #1e3a8a 100%)',
         duration: 1.5,
         ease: 'power2.inOut',
         onStart: () => animateGradientFromCircle(glowCircle),
@@ -54,7 +53,7 @@ function setTheme(theme) {
       break;
     case 'theme3':
       gsap.to(document.body, {
-        background: 'linear-gradient(to bottom, #e11d48 0%, #312e81 100%)', // custom gradient colors for theme3
+        background: 'linear-gradient(to bottom, #e11d48 0%, #312e81 100%)',
         duration: 1.5,
         ease: 'power2.inOut',
         onStart: () => animateGradientFromCircle(glowCircle),
@@ -62,7 +61,7 @@ function setTheme(theme) {
       break;
     case 'theme4':
       gsap.to(document.body, {
-        background: 'linear-gradient(to bottom, #2f855a 0%, #14b8a6 100%)', // custom gradient colors for theme4
+        background: 'linear-gradient(to bottom, #2f855a 0%, #14b8a6 100%)',
         duration: 1.5,
         ease: 'power2.inOut',
         onStart: () => animateGradientFromCircle(glowCircle),
@@ -81,14 +80,12 @@ function setTheme(theme) {
 
 // Function to animate the gradient transition from the circle
 function animateGradientFromCircle(glowCircle) {
-  // Calculate the center position of the glow circle
   const rect = glowCircle.getBoundingClientRect();
   const scrollY = window.scrollY || window.pageYOffset;
   const scrollX = window.scrollX || window.pageXOffset;
   const targetTop = rect.top + scrollY + rect.height / 2;
   const targetLeft = rect.left + scrollX + rect.width / 2;
 
-  // Use GSAP to animate the gradient starting point
   gsap.to(glowCircle, {
     top: targetTop,
     left: targetLeft,
@@ -100,7 +97,6 @@ function animateGradientFromCircle(glowCircle) {
 }
 
 // Projects page animations
-
 const glow = document.getElementById("glowCircle");
 const cards = document.querySelectorAll(".project-card");
 
@@ -112,8 +108,7 @@ cards.forEach((card, index) => {
     const scrollY = window.scrollY || window.pageYOffset;
     const scrollX = window.scrollX || window.pageXOffset;
 
-    const targetTop =
-      rect.top + scrollY + rect.height / 2 - glow.offsetHeight / 2;
+    const targetTop = rect.top + scrollY + rect.height / 2 - glow.offsetHeight / 2;
     const targetLeft = rect.left + scrollX - glow.offsetWidth - 20;
 
     const rotation = index % 2 === 0 ? 2.0 : -2.0;
@@ -153,79 +148,81 @@ cards.forEach((card, index) => {
   });
 });
 
-// Page entrance animations
-gsap.from("main", {
-  scale: 0.97,
-  opacity: 1,
-  duration: 0.6,
-  ease: "power2.out",
-});
+// Page entrance animations (for all pages)
 
-gsap.from("#projectsTitle", {
-  y: -60,
-  opacity: 1,
-  duration: 1,
-  delay: 0.2,
-  ease: "back.out(1.7)",
-});
-
-gsap.from("#projectsDesc", {
-  y: 30,
-  opacity: 1,
-  duration: 0.8,
-  delay: 0.4,
-  ease: "power2.out",
-});
-
-gsap.from(".project-card", {
-  y: 50,
-  opacity: 1,
-  duration: 0.9,
-  delay: 0.6,
-  ease: "power3.out",
-  stagger: 0.2,
-});
-
-// end projects animation
-
-// start about animations
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Intro Section Animation
-  gsap.from("section.text-center", {
-    opacity: 0,
-    y: -50,
-    duration: 1.2,
-    ease: "power3.out",
-  });
-
-  // Profile Image + Bio Animation
-  gsap.from("section.flex > div", {
-    scrollTrigger: {
-      trigger: "section.flex",
-      start: "top 80%",
-    },
-    opacity: 0,
-    y: 50,
-    duration: 1.1,
+function animatePageEntrance() {
+  gsap.from("main", {
+    scale: 0.97,
+    opacity: 1,
+    duration: 0.6,
     ease: "power2.out",
-    stagger: 0.3
   });
 
-  // Skills Cards Animation
-  gsap.from("section:last-of-type .bg-slate-800", {
-    scrollTrigger: {
-      trigger: "section:last-of-type",
-      start: "top 90%",
-    },
-    opacity: 0,
-    y: 40,
+  gsap.from("#projectsTitle", {
+    y: -60,
+    opacity: 1,
+    duration: 1,
+    delay: 0.2,
+    ease: "back.out(1.7)",
+  });
+
+  gsap.from("#projectsDesc", {
+    y: 30,
+    opacity: 1,
     duration: 0.8,
-    stagger: 0.2,
-    ease: "back.out(1.7)"
+    delay: 0.4,
+    ease: "power2.out",
   });
 
+  gsap.from(".project-card", {
+    y: 50,
+    opacity: 1,
+    duration: 0.9,
+    delay: 0.6,
+    ease: "power3.out",
+    stagger: 0.2,
+  });
+}
+
+// About page animations
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Intro Section Animation
+gsap.from("section.text-center", {
+  opacity: 0,
+  y: -50,
+  duration: 1.2,
+  ease: "power3.out",
+});
+
+// Profile Image + Bio Animation
+gsap.from("section.flex > div", {
+  scrollTrigger: {
+    trigger: "section.flex",
+    start: "top 80%",
+  },
+  opacity: 0,
+  y: 50,
+  duration: 1.1,
+  ease: "power2.out",
+  stagger: 0.3
+});
+
+// Skills Cards Animation
+gsap.from("section:last-of-type .bg-slate-800", {
+  scrollTrigger: {
+    trigger: "section:last-of-type",
+    start: "top 90%",
+  },
+  opacity: 0,
+  y: 40,
+  duration: 0.8,
+  stagger: 0.2,
+  ease: "back.out(1.7)"
+});
+
+// Text Animation
 const animateText = document.querySelector(".animate-text");
 
 if (animateText) {
@@ -246,3 +243,20 @@ if (animateText) {
     },
   });
 }
+
+// Page Transition - Smooth fade effect
+function handlePageTransition(newPageUrl) {
+  gsap.to('main', {
+    opacity: 0,
+    duration: 0.6,
+    ease: 'power2.inOut',
+    onComplete: () => {
+      window.location.href = newPageUrl;
+    }
+  });
+}
+
+// Ensure that the page entrance animations run after the page is fully loaded
+window.addEventListener('load', () => {
+  animatePageEntrance();
+});
