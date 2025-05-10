@@ -21,7 +21,7 @@ cards.forEach((card, index) => {
       scale: 1.05,
       rotate: rotation,
       duration: 0.3,
-      ease: "power2.out",
+      ease: "back.in(1.7)",
     });
 
     gsap.to(glow, {
@@ -40,7 +40,7 @@ cards.forEach((card, index) => {
       scale: 1,
       rotate: 0,
       duration: 0.3,
-      ease: "power2.out",
+      ease: "back.out(1.7)",
     });
 
     gsap.to(glow, {
