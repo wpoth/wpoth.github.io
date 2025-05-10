@@ -35,17 +35,25 @@
         </div>
     </div>
 
-    <header class="py-6 shadow-md">
-        <nav aria-label="Main Navigation">
-            <ul class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold">
-                <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
-                <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
-                <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
-                <li><a href="cv.html" class="hover:text-cyan-300 transition-colors">CV</a></li>
-                <li><a href="#contact" class="hover:text-cyan-300 transition-colors">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+   <header class="py-6 shadow-md">
+    <nav aria-label="Main Navigation">
+      <ul class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold">
+        <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
+        <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
+        <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
+        <li><a href="cv.html" class="hover:text-cyan-300 transition-colors">CV</a></li>
+        <li><a href="#contact" class="hover:text-cyan-300 transition-colors">Contact</a></li>
+        <li>
+          <select class="theme-selector bg-slate-900 text-white py-2 px-4 rounded-md shadow-md">
+            <option value="default">Default</option>
+            <option value="theme2">Purple to Blue</option>
+            <option value="theme3">Pink to Indigo</option>
+            <option value="theme4">Green to Teal</option>
+          </select>
+        </li>
+      </ul>
+    </nav>
+  </header>
     <main class="px-6 py-20 max-w-6xl mx-auto space-y-16">
         <!-- Intro Section -->
         <section class="text-center">

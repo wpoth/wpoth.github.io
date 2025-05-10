@@ -2,6 +2,11 @@ html {
   scroll-behavior: smooth;
 }
 
+body{
+    background: linear-gradient(to bottom, #1e293b 0%, #006f7f 100%); /* Default gradient */
+    transition: 1.5s ease; /* Smooth transition for gradient change */
+
+}
 .modern-f {
   font-family: "Cantata One", serif;
   font-weight: 400;

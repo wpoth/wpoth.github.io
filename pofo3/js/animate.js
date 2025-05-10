@@ -1,3 +1,104 @@
+// color theme swapper
+
+// Set the selected theme based on localStorage or default theme
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'default'; // Default to 'default' if no theme is saved
+  setTheme(savedTheme);
+
+  // Set the dropdown to match the saved theme
+  const themeSelector = document.querySelector('.theme-selector');
+  themeSelector.value = savedTheme;
+
+  themeSelector.addEventListener('change', (event) => {
+    const selectedTheme = event.target.value;
+    
+    // Apply the selected theme
+    setTheme(selectedTheme);
+
+    // Save the selected theme in localStorage
+    localStorage.setItem('theme', selectedTheme);
+  });
+});
+
+
+// Function to apply the theme class to the body
+function setTheme(theme) {
+  // Remove all theme-related classes
+  document.body.classList.remove(
+    'bg-gradient-to-b', 'from-slate-800', 'to-cyan-800',
+    'from-purple-700', 'to-blue-600',
+    'from-pink-600', 'to-indigo-800',
+    'from-green-700', 'to-teal-700'
+  );
+  
+  // Set the initial position of the glow circle before applying the gradient
+  const glowCircle = document.getElementById("glowCircle");
+
+  // Set different gradients based on the selected theme and animate it with GSAP
+  switch (theme) {
+    case 'default':
+      gsap.to(document.body, {
+        background: 'linear-gradient(to bottom, #1e293b 0%, #006f7f 100%)', // custom gradient colors for default
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onStart: () => animateGradientFromCircle(glowCircle),
+      });
+      break;
+    case 'theme2':
+      gsap.to(document.body, {
+        background: 'linear-gradient(to bottom, #5f4b8b 0%, #1e3a8a 100%)', // custom gradient colors for theme2
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onStart: () => animateGradientFromCircle(glowCircle),
+      });
+      break;
+    case 'theme3':
+      gsap.to(document.body, {
+        background: 'linear-gradient(to bottom, #e11d48 0%, #312e81 100%)', // custom gradient colors for theme3
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onStart: () => animateGradientFromCircle(glowCircle),
+      });
+      break;
+    case 'theme4':
+      gsap.to(document.body, {
+        background: 'linear-gradient(to bottom, #2f855a 0%, #14b8a6 100%)', // custom gradient colors for theme4
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onStart: () => animateGradientFromCircle(glowCircle),
+      });
+      break;
+    default:
+      gsap.to(document.body, {
+        background: 'linear-gradient(to bottom, #1e293b 0%, #006f7f 100%)',
+        duration: 1.5,
+        ease: 'power2.inOut',
+        onStart: () => animateGradientFromCircle(glowCircle),
+      });
+      break;
+  }
+}
+
+// Function to animate the gradient transition from the circle
+function animateGradientFromCircle(glowCircle) {
+  // Calculate the center position of the glow circle
+  const rect = glowCircle.getBoundingClientRect();
+  const scrollY = window.scrollY || window.pageYOffset;
+  const scrollX = window.scrollX || window.pageXOffset;
+  const targetTop = rect.top + scrollY + rect.height / 2;
+  const targetLeft = rect.left + scrollX + rect.width / 2;
+
+  // Use GSAP to animate the gradient starting point
+  gsap.to(glowCircle, {
+    top: targetTop,
+    left: targetLeft,
+    scale: 10,
+    opacity: 0.6,
+    duration: 1.5,
+    ease: 'power2.out',
+  });
+}
+
 // Projects page animations
 
 const glow = document.getElementById("glowCircle");
