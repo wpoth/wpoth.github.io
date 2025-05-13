@@ -97,25 +97,11 @@ function animateGradientFromCircle(glowCircle) {
 }
 
 // Projects page animations
-const glow = document.getElementById("glowCircle");
 const cards = document.querySelectorAll(".project-card");
-
-const color = "rgba(255,255,255)"; // white glow
-
-cards.forEach((card, index) => {
+cards.forEach((card) => {
   card.addEventListener("mouseenter", () => {
-    const rect = card.getBoundingClientRect();
-    const scrollY = window.scrollY || window.pageYOffset;
-    const scrollX = window.scrollX || window.pageXOffset;
-
-    const targetTop = rect.top + scrollY + rect.height / 2 - glow.offsetHeight / 2;
-    const targetLeft = rect.left + scrollX - glow.offsetWidth - 20;
-
-    const rotation = index % 2 === 0 ? 2.0 : -2.0;
-
     gsap.to(card, {
       scale: 1.05,
-      rotate: rotation,
       duration: 0.3,
       ease: "back.in(1.7)",
     });
@@ -134,7 +120,6 @@ cards.forEach((card, index) => {
   card.addEventListener("mouseleave", () => {
     gsap.to(card, {
       scale: 1,
-      rotate: 0,
       duration: 0.3,
       ease: "back.out(1.7)",
     });
