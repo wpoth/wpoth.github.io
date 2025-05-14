@@ -29,9 +29,9 @@
 
 <body class="relative min-h-screen bg-gradient-to-b from-slate-900 to-cyan-500 text-white overflow-x-hidden">
     <!-- Background Blur Element -->
-    <div class="absolute inset-0 z-[-1]">
-        <div
-            class="w-96 h-96 bg-cyan-400 opacity-30 blur-3xl rounded-full absolute top-20 left-1/2 transform -translate-x-1/2">
+   <div class="fixed pointer-events-none z-[-1]">
+        <div id="glowCircle"
+            class="w-20 h-20 bg-cyan-400 opacity-30 blur-3xl rounded-full transition-transform duration-300 absolute">
         </div>
     </div>
 
