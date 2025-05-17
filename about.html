@@ -34,25 +34,36 @@
             class="w-1 h-1 bg-cyan-400 opacity-30 blur-3xl rounded-full transition-transform duration-300 absolute">
         </div>
     </div>
-   <header class="py-6 shadow-md">
-    <nav aria-label="Main Navigation">
-      <ul class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold">
-        <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
-        <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
-        <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
-        <li><a href="../cv.docx" download="cv.docx">Download CV</a></li>
-        <li><a href="contact.html" class="hover:text-cyan-300 transition-colors">Contact</a></li>
-        <li>
-          <select class="theme-selector bg-slate-900 text-white py-2 px-4 rounded-md shadow-md">
-            <option value="default">Default</option>
-            <option value="theme2">Purple to Blue</option>
-            <option value="theme3">Pink to Indigo</option>
-            <option value="theme4">Green to Teal</option>
-          </select>
-        </li>
-      </ul>
-    </nav>
-  </header>
+    <header class="py-6 shadow-md relative">
+        <div class="flex justify-between items-center px-6 md:px-16">
+            <h1 class="text-xl font-bold">My Portfolio</h1>
+            <!-- Hamburger Button -->
+            <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav aria-label="Main Navigation">
+            <ul id="mobile-menu"
+                class="hidden flex-col md:flex md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold mt-4 md:mt-0 px-6 md:px-0">
+                <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
+                <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
+                <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
+                <li><a href="../cv.docx" download="cv.docx" class="hover:text-cyan-300 transition-colors">Download
+                        CV</a></li>
+                <li><a href="contact.html" class="hover:text-cyan-300 transition-colors">Contact</a></li>
+                <li>
+                    <select class="theme-selector bg-slate-900 text-white py-2 px-4 rounded-md shadow-md">
+                        <option value="default">Default</option>
+                        <option value="theme2">Purple to Blue</option>
+                        <option value="theme3">Pink to Indigo</option>
+                        <option value="theme4">Green to Teal</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+    </header>
     <main class="px-6 py-20 max-w-6xl mx-auto space-y-16">
         <!-- Intro Section -->
         <section class="text-center">
@@ -82,14 +93,24 @@
         <section>
             <h3 class="text-2xl font-semibold mb-6 text-center">Skills</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">HTML & CSS</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">JavaScript</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">PHP & MySQL</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">Symfony</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">Bootstrap</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">GSAP</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">Git & Github/Github Desktop</div>
-                <div class="bg-slate-800 p-6 rounded-xl shadow-md">Tailwind CSS</div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">HTML &
+                    CSS</div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">
+                    JavaScript</div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">PHP &
+                    MySQL</div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">Symfony
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">
+                    Bootstrap</div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">GSAP
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">
+                    Git & Github/Github Desktop
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl shadow-md flex items-center justify-center text-center">
+                    Tailwind CSS
+                </div>
             </div>
         </section>
     </main>
@@ -97,3 +118,4 @@
 </body>
 
 <script src="js/animate.js"></script>
+<script src="js/header.js"></script>

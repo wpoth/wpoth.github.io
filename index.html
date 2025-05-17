@@ -28,17 +28,27 @@
 <body class="relative min-h-screen bg-gradient-to-b from-slate-900 to-cyan-500 text-white overflow-x-hidden">
   <!-- Background Blur Element -->
   <div class="fixed pointer-events-none z-[-1]">
-        <div id="glowCircle"
-            class="w-1 h-1 bg-cyan-400 opacity-30 blur-3xl rounded-full transition-transform duration-300 absolute">
-        </div>
+    <div id="glowCircle"
+      class="w-1 h-1 bg-cyan-400 opacity-30 blur-3xl rounded-full transition-transform duration-300 absolute">
     </div>
-  <header class="py-6 shadow-md">
+  </div>
+  <header class="py-6 shadow-md relative">
+    <div class="flex justify-between items-center px-6 md:px-16">
+      <h1 class="text-xl font-bold">My Portfolio</h1>
+      <!-- Hamburger Button -->
+      <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+
+    <!-- Navigation Menu -->
     <nav aria-label="Main Navigation">
-      <ul class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold">
+      <ul id="mobile-menu"
+        class="hidden flex-col md:flex md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold mt-4 md:mt-0 px-6 md:px-0">
         <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
         <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
         <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
-        <li><a href="../cv.docx" download="cv.docx">Download CV</a></li>
+        <li><a href="../cv.docx" download="cv.docx" class="hover:text-cyan-300 transition-colors">Download CV</a></li>
         <li><a href="contact.html" class="hover:text-cyan-300 transition-colors">Contact</a></li>
         <li>
           <select class="theme-selector bg-slate-900 text-white py-2 px-4 rounded-md shadow-md">
@@ -51,6 +61,7 @@
       </ul>
     </nav>
   </header>
+
 
   <main class="flex items-center justify-center text-center min-h-[70vh] px-4">
     <section>
@@ -65,7 +76,7 @@
       <p class="text-cyan-200 mt-2 text-xl md:text-2xl font-medium animate__animated animate__fadeInUp">
         Software Developer • Problem Solver • Team Player
       </p>
-      <p class="text-left mt-4 text-lg md:text-xl text-slate-200 max-w-xl mx-auto">
+      <p class="text-center mt-4 text-lg md:text-xl text-slate-200 max-w-xl mx-auto">
         Welcome to my personal website. I'm passionate about web development, design, and building useful projects.
       </p>
       <p class="text-center mt-4 text-lg md:text-xl text-blue-200 max-w-xl mx-auto">
@@ -85,5 +96,6 @@
   </footer>
 </body>
 <script src="js/animate.js"></script>
+<script src="js/header.js"></script>
 
 </html>
