@@ -1,11 +1,46 @@
-body {
-    background-image: url("/img/forest_pofo.jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
+html {
+  scroll-behavior: smooth;
+}
 
-  .card img {
-    height: 250px;
+body{
+    background: linear-gradient(to bottom, #1e293b 0%, #006f7f 100%); /* Default gradient */
+    transition: 1.5s ease; /* Smooth transition for gradient change */
+
+}
+.modern-f {
+  font-family: "Cantata One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
   }
+  10% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-wave {
+  animation: wave 2s infinite;
+  display: inline-block;
+}
