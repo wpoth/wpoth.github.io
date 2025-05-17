@@ -29,9 +29,9 @@
 
 <body class="relative min-h-screen bg-gradient-to-b from-slate-900 to-cyan-500 text-white overflow-x-hidden">
     <!-- Background Blur Element -->
-   <div class="fixed pointer-events-none z-[-1]">
+    <div class="fixed pointer-events-none z-[-1]">
         <div id="glowCircle"
-            class="w-20 h-20 bg-cyan-400 opacity-30 blur-3xl rounded-full transition-transform duration-300 absolute">
+            class="w-1 h-1 bg-cyan-400 opacity-30 blur-3xl rounded-full transition-transform duration-300 absolute">
         </div>
     </div>
 
@@ -60,15 +60,12 @@
             <p class="text-lg opacity-80 mb-10">Got a project or question? I’d love to hear from you.</p>
 
             <form class="contact-form flex flex-col gap-6 text-left">
-                <input type="text" placeholder="Your Name"
-                    class="bg-slate-800 px-5 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
-                    required />
-                <input type="email" placeholder="Your Email"
-                    class="bg-slate-800 px-5 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
-                    required />
-                <textarea rows="5" placeholder="Your Message"
-                    class="bg-slate-800 px-5 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
-                    required></textarea>
+                <input type="text" name="name" placeholder="Your Name" required
+                    class="bg-slate-800 px-5 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300" />
+                <input type="email" name="email" placeholder="Your Email" required
+                    class="bg-slate-800 px-5 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300" />
+                <textarea name="message" rows="5" placeholder="Your Message" required
+                    class="bg-slate-800 px-5 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"></textarea>
                 <button type="submit"
                     class="mt-4 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 rounded-2xl transition-all duration-300 shadow-lg">
                     Send Message
@@ -80,7 +77,8 @@
         </section>
     </main>
 
-<script src="js/animate.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/form-submit.js"></script>
 </body>
 
 </html>

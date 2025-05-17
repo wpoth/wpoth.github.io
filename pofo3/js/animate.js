@@ -73,7 +73,7 @@ cards.forEach((card) => {
     gsap.to(card, {
       scale: 1.05,
       duration: 0.3,
-      ease: "back.in(1.7)",
+      ease: "none",
     });
 
     if (glowCircle) {
@@ -93,7 +93,7 @@ cards.forEach((card) => {
     gsap.to(card, {
       scale: 1,
       duration: 0.3,
-      ease: "back.out(1.7)",
+     ease: "none",
     });
 
     if (glowCircle) {
@@ -221,52 +221,33 @@ window.addEventListener("load", () => {
 // Contact page entrance animation
 if (document.querySelector(".contact-main")) {
   gsap.from(".contact-heading", {
-    y: -50,
-    opacity: 0,
+    y: -25,
+    opacity: 0.7,
     duration: 1.2,
     ease: "back.out(1.7)",
   });
 
   gsap.from(".contact-form", {
-    scrollTrigger: {
-      trigger: ".contact-form",
-      start: "top 85%",
-    },
-    y: 50,
-    opacity: 0,
+    y: 25,
+    opacity: 0.7,
     duration: 1.1,
     ease: "power2.out",
   });
 
-  gsap.from(
-    ".contact-form input, .contact-form textarea, .contact-form button",
-    {
-      scrollTrigger: {
-        trigger: ".contact-form",
-        start: "top 90%",
-      },
-      y: 30,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 0.8,
-      ease: "power3.out",
-    }
-  );
+  // Prevent layout shift overlap
+  gsap.set(".contact-form input, .contact-form textarea, .contact-form button", {
+    y: 25,
+    opacity: 0.7,
+    position: "relative"
+  });
 
-  const form = document.querySelector(".contact-form");
-  const successMessage = document.querySelector(".submit-success");
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    successMessage.classList.remove("opacity-0");
-    successMessage.classList.add("opacity-100");
-
-    form.querySelectorAll("input, textarea").forEach((el) => (el.value = ""));
-
-    setTimeout(() => {
-      successMessage.classList.remove("opacity-100");
-      successMessage.classList.add("opacity-0");
-    }, 3000);
+  gsap.to(".contact-form input, .contact-form textarea, .contact-form button", {
+    y: 0,
+    opacity: 0.7,
+    duration: 0.8,
+    ease: "power3.out",
+    stagger: 0.1
   });
 }
+
+
