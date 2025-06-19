@@ -10,15 +10,22 @@ document.addEventListener('DOMContentLoaded', function() {
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    emailjs.sendForm('service_od5azmt', 'template_cvp637d', form)
+    // Send to yourself
+    emailjs.sendForm('service_od5azmt', 'template_xjalk1m', form)
       .then(function() {
-        successMsg.style.opacity = 1;
-        form.reset();
-        setTimeout(() => {
-          successMsg.style.opacity = 0;
-        }, 4000);
+        // Send auto-reply to sender
+        emailjs.sendForm('service_od5azmt', 'template_cvp637d', form)
+          .then(function() {
+            successMsg.style.opacity = 1;
+            form.reset();
+            setTimeout(() => {
+              successMsg.style.opacity = 0;
+            }, 4000);
+          }, function(error) {
+            alert('Failed to send auto-reply.');
+          });
       }, function(error) {
-        alert('Failed to send message. Please try again later.');
+        alert('Failed to send message.');
       });
   });
 });
