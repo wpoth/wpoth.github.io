@@ -25,7 +25,7 @@
 
 <body class="relative min-h-screen bg-gradient-to-b from-slate-900 to-cyan-700 text-white overflow-x-hidden">
     <!-- Glow Circle that follows card hover -->
-     <div class="absolute inset-0 z-[-1]">
+    <div class="absolute inset-0 z-[-1]">
         <div
             class="w-1 h-1 bg-cyan-400 opacity-30 blur-3xl rounded-full absolute top-20 left-1/2 transform -translate-x-1/2">
         </div>
@@ -36,35 +36,36 @@
         </div>
     </div>
 
-   <header class="py-6 shadow-md relative">
-    <div class="flex justify-between items-center px-6 md:px-16">
-      <h1 class="text-xl font-bold">My Portfolio</h1>
-      <!-- Hamburger Button -->
-      <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
-        <i class="bi bi-list"></i>
-      </button>
-    </div>
+    <header class="py-6 shadow-md relative">
+        <div class="flex justify-between items-center px-6 md:px-16">
+            <h1 class="text-xl font-bold">My Portfolio</h1>
+            <!-- Hamburger Button -->
+            <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
 
-    <!-- Navigation Menu -->
-    <nav aria-label="Main Navigation">
-      <ul id="mobile-menu"
-        class="hidden flex-col md:flex md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold mt-4 md:mt-0 px-6 md:px-0">
-        <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
-        <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
-        <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
-        <li><a href="../cv.docx" download="cv.docx" class="hover:text-cyan-300 transition-colors">Download CV</a></li>
-        <li><a href="contact.html" class="hover:text-cyan-300 transition-colors">Contact</a></li>
-        <li>
-          <select class="theme-selector bg-slate-900 text-white py-2 px-4 rounded-md shadow-md">
-            <option value="default">Default</option>
-            <option value="theme2">Purple to Blue</option>
-            <option value="theme3">Pink to Indigo</option>
-            <option value="theme4">Green to Teal</option>
-          </select>
-        </li>
-      </ul>
-    </nav>
-  </header>
+        <!-- Navigation Menu -->
+        <nav aria-label="Main Navigation">
+            <ul id="mobile-menu"
+                class="hidden flex-col md:flex md:flex-row justify-center items-center gap-6 md:gap-16 text-lg font-semibold mt-4 md:mt-0 px-6 md:px-0">
+                <li><a href="index.html" class="hover:text-cyan-300 transition-colors">Home</a></li>
+                <li><a href="about.html" class="hover:text-cyan-300 transition-colors">About Me</a></li>
+                <li><a href="projects.html" class="hover:text-cyan-300 transition-colors">My Projects</a></li>
+                <li><a href="../cv.docx" download="cv.docx" class="hover:text-cyan-300 transition-colors">Download
+                        CV</a></li>
+                <li><a href="contact.html" class="hover:text-cyan-300 transition-colors">Contact</a></li>
+                <li>
+                    <select class="theme-selector bg-slate-900 text-white py-2 px-4 rounded-md shadow-md">
+                        <option value="default">Default</option>
+                        <option value="theme2">Purple to Blue</option>
+                        <option value="theme3">Pink to Indigo</option>
+                        <option value="theme4">Green to Teal</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <main class="px-6 py-20 space-y-16 max-w-4xl mx-auto">
         <section class="text-center">
@@ -78,43 +79,35 @@
 
         <!-- Project Cards -->
         <section class="grid gap-12">
-            <a href="https://github.com/ROCMondriaanTIN/sd23-p04-project-dashboard-joe-data">
-                <div
-                    class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
-                    <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-bar-chart"></i> ChartJS Data</h2>
-                    <p>A site where we learned how to use chartJS</p>
-                </div>
-            </a>
-            <a href="https://github.com/ROCMondriaanTIN/sd23-p07-project-pizza-sopranos-pizza-paradize">
-                <div
-                    class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
-                    <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-cart"></i> Webshop</h2>
-                    <p>
-                        PHP (Symfony) and MySQL powered e-commerce platform with filtering
-                        and cart features.
-                    </p>
-                </div>
-            </a>
-            <a href="https://wpoth.github.io">
-                <div
-                    class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
-                    <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-person"></i> Old Portfolio</h2>
-                    <p>A mixture of nature and opacity</p>
-                </div>
-            </a>
-            <a href="https://github.com/ROCMondriaanTIN/WPoth-Weather-app">
-                <div
-                    class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
-                    <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-cloud-sun"></i> Weather App</h2>
-                    <p>
-                        A small project where we needed to use an api for the first time
-                    </p>
-                </div>
-            </a>
+            <div
+                class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
+                <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-bar-chart"></i> ChartJS Data</h2>
+                <p>A site where we learned how to use chartJS</p>
+            </div>
+            <div
+                class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
+                <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-cart"></i> Webshop</h2>
+                <p>
+                    PHP (Symfony) and MySQL powered e-commerce platform with filtering
+                    and cart features.
+                </p>
+            </div>
+            <div
+                class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
+                <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-person"></i> Old Portfolio</h2>
+                <p>A mixture of nature and opacity</p>
+            </div>
+            <div
+                class="project-card bg-slate-800/60 backdrop-blur-md p-8 rounded-3xl shadow-lg hover:cursor-pointer transition-all">
+                <h2 class="text-2xl font-semibold mb-2"><i class="bi bi-cloud-sun"></i> Weather App</h2>
+                <p>
+                    A small project where we needed to use an api for the first time
+                </p>
+            </div>
         </section>
     </main>
-<script src="js/animate.js"></script>
-<script src="js/header.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/header.js"></script>
 
 </body>
 
