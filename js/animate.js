@@ -27,6 +27,22 @@ function setTheme(theme, animate = true) {
 
   const bgGradient = themes[theme] || themes.default;
 
+  // Define theme accent colors for card glow
+  const accentColors = {
+    default: "rgba(34,211,238,0.4)",      // cyan-400/40
+    theme2: "rgba(99,102,241,0.4)",       // indigo-500/40
+    theme3: "rgba(225,29,72,0.4)",        // rose-600/40
+    theme4: "rgba(45,212,191,0.4)",       // teal-400/40
+  };
+  const textAccentColors = {
+    default: "#67e8f9",   // lighter cyan-300
+    theme2: "#a5b4fc",    // lighter indigo-300
+    theme3: "#fb7185",    // lighter rose-400
+    theme4: "#5eead4",    // lighter teal-300
+  };
+  window.currentAccentColor = accentColors[theme] || accentColors.default;
+  window.currentTextAccentColor = textAccentColors[theme] || textAccentColors.default;
+
   // Apply the gradient transition
   if (animate && glowCircle) {
     gsap.to(document.body, {
@@ -256,5 +272,20 @@ if (document.querySelector(".contact-main")) {
     stagger: 0.1
   });
 }
+
+// Main title animation
+gsap.from(".main-title", { y: -40, opacity: 0, duration: 1, ease: "power2.out" });
+
+// Skills card hover effect (About page)
+document.querySelectorAll('.skills-card').forEach(card => {
+  card.addEventListener('mouseenter', () => {
+    card.style.boxShadow = `0 0 32px 0 ${window.currentAccentColor}`;
+    card.style.color = window.currentTextAccentColor;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.boxShadow = '';
+    card.style.color = '';
+  });
+});
 
 
