@@ -60,11 +60,14 @@ function animateGradientFromCircle(glowCircle) {
 }
 
 // Projects page animations
+let hoverEnabled = false; // 1. Add flag
+
 const glowCircle = document.getElementById("glowCircle");
 const cards = document.querySelectorAll(".project-card");
 
 cards.forEach((card) => {
   card.addEventListener("mouseenter", (e) => {
+    if (!hoverEnabled) return; // 3. Only zoom if enabled
     const rect = card.getBoundingClientRect();
     const targetTop = rect.top + window.scrollY + rect.height / 2;
     const targetLeft = rect.left + window.scrollX + rect.width / 2;
@@ -90,10 +93,11 @@ cards.forEach((card) => {
   });
 
   card.addEventListener("mouseleave", () => {
+    if (!hoverEnabled) return; // 3. Only zoom if enabled
     gsap.to(card, {
       scale: 1,
       duration: 0.3,
-     ease: "none",
+      ease: "none",
     });
 
     if (glowCircle) {
@@ -216,6 +220,9 @@ function handlePageTransition(newPageUrl) {
 // Run page entrance animation after full load
 window.addEventListener("load", () => {
   animatePageEntrance();
+  setTimeout(() => {
+    hoverEnabled = true; // 2. Enable hover after 3.5s
+  }, 5);
 });
 
 // Contact page entrance animation
