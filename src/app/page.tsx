@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, easeOut } from 'framer-motion';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
 import { ProjectCard } from '@/components/ProjectCard';
@@ -24,7 +24,7 @@ export default function Home() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: 'easeOut',
+        ease: easeOut,
       },
     },
   };
