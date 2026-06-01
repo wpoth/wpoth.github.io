@@ -15,37 +15,47 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+function getInitialTheme(): boolean {
+  // Get theme from localStorage, default to light mode
+  if (typeof window !== 'undefined') {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  }
+  return false;
+}
+
+function applyTheme(isDark: boolean) {
+  const htmlElement = document.documentElement;
+  if (isDark) {
+    htmlElement.classList.add('dark');
+  } else {
+    htmlElement.classList.remove('dark');
+  }
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check localStorage first, then check system preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDark(savedTheme === 'dark');
-    } else {
-      setIsDark(
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      );
-    }
+    // Initialize theme from localStorage on mount
+    const initialTheme = getInitialTheme();
+    setIsDark(initialTheme);
+    applyTheme(initialTheme);
     setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
-
-    const htmlElement = document.documentElement;
-    if (isDark) {
-      htmlElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      htmlElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    applyTheme(isDark);
   }, [isDark, mounted]);
 
-  const toggleTheme = () => setIsDark(!isDark);
+  const toggleTheme = () => {
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    applyTheme(newTheme);
+  };
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
@@ -57,7 +67,6 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    // Return default theme during SSR or if context is not available
     return { isDark: false, toggleTheme: () => {} };
   }
   return context;

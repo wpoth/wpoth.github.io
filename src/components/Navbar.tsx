@@ -13,34 +13,34 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white dark:bg-warm-gray-800 shadow-sm dark:shadow-md border-b border-warm-gray-100 dark:border-warm-gray-700">
+    <nav className="sticky top-0 z-50 bg-white dark:bg-warm-gray-900 shadow-sm dark:shadow-md border-b border-warm-gray-100 dark:border-warm-gray-700">
       <Container className="flex items-center justify-between h-16">
-        <div className="text-2xl font-bold bg-gradient-to-r from-coral to-amber bg-clip-text text-transparent">
+        <div className="text-2xl font-light tracking-tight bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
           Portfolio
         </div>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           <button
             onClick={() => scrollToSection('hero')}
-            className="text-warm-gray-600 dark:text-warm-gray-300 hover:text-coral dark:hover:text-amber transition-colors"
+            className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
           >
             Home
           </button>
           <button
             onClick={() => scrollToSection('projects')}
-            className="text-warm-gray-600 dark:text-warm-gray-300 hover:text-coral dark:hover:text-amber transition-colors"
+            className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
           >
             Projects
           </button>
           <button
             onClick={() => scrollToSection('about')}
-            className="text-warm-gray-600 dark:text-warm-gray-300 hover:text-coral dark:hover:text-amber transition-colors"
+            className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
           >
             About
           </button>
           <button
             onClick={() => scrollToSection('contact')}
-            className="text-warm-gray-600 dark:text-warm-gray-300 hover:text-coral dark:hover:text-amber transition-colors"
+            className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
           >
             Contact
           </button>

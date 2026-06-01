@@ -1,73 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf9;
-  --foreground: #2b2520;
-  --coral: #ff6b6b;
-  --coral-light: #ffb8b0;
-  --amber: #f59e0b;
-  --amber-dark: #d97706;
-  --font-geist-sans: system-ui, -apple-system, sans-serif;
-  --font-geist-mono: "Courier New", monospace;
+  --background: #f5f5f0;
+  --foreground: #3a3a35;
 }
 
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  
-  --color-coral-50: #FFF5F4;
-  --color-coral-100: #FFE8E5;
-  --color-coral-200: #FFD1CB;
-  --color-coral-300: #FFB8B0;
-  --color-coral-400: #FF9B89;
-  --color-coral-500: #FF6B6B;
-  --color-coral-600: #FF5555;
-  --color-coral-700: #E83E3E;
-  --color-coral-800: #C83232;
-  --color-coral-900: #A82828;
-  
-  --color-amber-50: #FFFBF0;
-  --color-amber-100: #FFF7E6;
-  --color-amber-200: #FFEBD0;
-  --color-amber-300: #FFD9A8;
-  --color-amber-400: #FFC880;
-  --color-amber-500: #F59E0B;
-  --color-amber-600: #D97706;
-  --color-amber-700: #B45309;
-  --color-amber-800: #92400E;
-  --color-amber-900: #78350F;
-  
-  --color-warm-gray-50: #FAFAF9;
-  --color-warm-gray-100: #F5F5F3;
-  --color-warm-gray-200: #EFEFEB;
-  --color-warm-gray-300: #E7E5E0;
-  --color-warm-gray-400: #D6D3CC;
-  --color-warm-gray-500: #A39E93;
-  --color-warm-gray-600: #8B8680;
-  --color-warm-gray-700: #6B6560;
-  --color-warm-gray-800: #4B4540;
-  --color-warm-gray-900: #2B2520;
-  
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --background: #2a2a24;
+  --foreground: #f5f5f0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1a1a18;
-    --foreground: #f5f5f3;
-    --coral: #ff8a8a;
-    --coral-light: #ffb8b0;
-    --amber: #fcd34d;
-    --amber-dark: #f59e0b;
-  }
+html {
+  background: linear-gradient(135deg, #f5f5f0 0%, #fffbf0 100%);
+  min-height: 100vh;
+}
+
+html.dark {
+  background: linear-gradient(135deg, #2a2a24 0%, #3a3a34 100%);
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
 }
 
 /* Smooth transitions for dark mode toggle */

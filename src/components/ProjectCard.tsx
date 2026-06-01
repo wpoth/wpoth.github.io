@@ -18,9 +18,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   link,
 }) => {
   const CardContent = (
-    <div className="move-up-on-hover bg-white dark:bg-warm-gray-800 rounded-lg overflow-hidden border border-warm-gray-200 dark:border-warm-gray-700">
+    <div className="group bg-white dark:bg-warm-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 border border-warm-gray-100 dark:border-warm-gray-700 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-gradient-to-b before:from-orange-500 before:to-orange-400 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300">
       {image && (
-        <div className="w-full h-48 bg-gradient-to-br from-coral-200 to-amber-200 dark:from-coral-700 dark:to-amber-700 overflow-hidden">
+        <div className="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-700 dark:to-orange-800 overflow-hidden">
           <img
             src={image}
             alt={title}
@@ -28,18 +28,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           />
         </div>
       )}
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-warm-gray-900 dark:text-white mb-2">
+      <div className="p-8">
+        <h3 className="text-2xl font-semibold text-warm-gray-900 dark:text-white mb-3">
           {title}
         </h3>
-        <p className="text-warm-gray-600 dark:text-warm-gray-300 mb-4">
+        <p className="text-warm-gray-600 dark:text-warm-gray-400 mb-6 leading-relaxed font-light">
           {description}
         </p>
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 bg-coral-100 dark:bg-coral-900 text-coral-700 dark:text-coral-200 text-sm rounded-full"
+              className="px-3 py-1 bg-warm-gray-100 dark:bg-warm-gray-700 text-warm-gray-700 dark:text-warm-gray-200 text-sm rounded-full font-light hover:bg-orange-100 dark:hover:bg-orange-800 transition-colors"
             >
               {tag}
             </span>
