@@ -33,39 +33,33 @@ export default function Home() {
     {
       title: 'E-Commerce Platform',
       description:
-        'A modern e-commerce platform built with Next.js, featuring product catalogs, shopping cart, and payment integration.',
-      tags: ['Next.js', 'React', 'Tailwind CSS', 'Stripe'],
+        'A modern e-commerce platform built with Symfony, featuring product catalogs, shopping cart, and payment integration.',
+      tags: ['Symfony', 'PHP', 'MySQL', 'Tailwind CSS'],
     },
     {
-      title: 'Design System',
+      title: 'CRUD Application',
       description:
-        'Comprehensive design system and component library for a SaaS application, ensuring consistency across products.',
-      tags: ['React', 'TypeScript', 'Storybook', 'Figma'],
+        'A full-featured CRUD application built with Symfony, featuring real-time updates and seamless integration.',
+      tags: ['Symfony', 'PHP', 'MySQL', 'Tailwind CSS'],
     },
     {
       title: 'Analytics Dashboard',
       description:
         'Real-time analytics dashboard with interactive charts and data visualization for business intelligence.',
-      tags: ['React', 'D3.js', 'Node.js', 'PostgreSQL'],
+      tags: ['HTML, CSS & JavaScript', 'Chart.JS', 'Node.js', 'MySQL'],
     },
     {
       title: 'Mobile App',
       description:
-        'Cross-platform mobile application built with React Native, featuring offline support and real-time sync.',
-      tags: ['React Native', 'Firebase', 'Redux', 'TypeScript'],
+        'Quiz app',
+      tags: ['Swift', 'Objective-C', 'iOS', 'Android'],
     },
     {
-      title: 'Blog Platform',
+      title: 'Portfolio :)',
       description:
-        'Full-stack blogging platform with markdown support, image optimization, and SEO-friendly architecture.',
-      tags: ['Next.js', 'Markdown', 'Image Optimization', 'SEO'],
-    },
-    {
-      title: 'Task Management App',
-      description:
-        'Collaborative task management tool with real-time updates, team collaboration, and progress tracking.',
-      tags: ['React', 'WebSockets', 'MongoDB', 'Express'],
-    },
+        'Portfolio website built with Next.js, showcasing projects and skills with a focus on performance and SEO.',
+      tags: ['Next.js', 'Framer Motion', 'Gsap', 'SEO'],
+    }
   ];
 
   return (
