@@ -1,14 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { navItems } from '@/lib/navigation';
 import { motion, easeOut } from 'framer-motion';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
 import { ProjectCard } from '@/components/ProjectCard';
 
 export default function Home() {
+  const [progress, setProgress] = useState<Record<string, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState('');
+  useEffect(() => {
+    const update = () => {
+      const scrollY = window.scrollY;
+      const windowH = window.innerHeight;
+
+      const newProgress: Record<string, number> = {};
+
+      navItems.forEach((item) => {
+        const el = document.getElementById(item.id);
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const offsetTop = rect.top + scrollY;
+        const height = el.offsetHeight;
+
+        const start = offsetTop - windowH;
+        const end = offsetTop + height;
+
+        const value = (scrollY - start) / (end - start);
+
+        newProgress[item.id] = Math.max(0, Math.min(1, value));
+      });
+
+      setProgress(newProgress);
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+
+    return () => window.removeEventListener('scroll', update);
+  }, []);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -66,7 +99,21 @@ export default function Home() {
   ];
 
   return (
+
     <div className="w-full">
+      <div className="fixed top-0 left-0 w-full h-[2px] flex z-[60]">
+        {navItems.map((item) => (
+          <div key={item.id} className="flex-1 bg-gray-200 relative">
+            <motion.div
+              className="absolute left-0 top-0 h-full bg-orange-500"
+              animate={{
+                scaleX: progress[item.id] || 0,
+              }}
+              style={{ transformOrigin: 'left' }}
+            />
+          </div>
+        ))}
+      </div>
       {/* Hero Section */}
       <section
         id="hero"
@@ -295,7 +342,7 @@ export default function Home() {
               className="space-y-4 bg-gray-50 p-8 rounded-2xl"
               onSubmit={async (e) => {
                 e.preventDefault();
-                
+
                 const formData = new FormData(e.currentTarget);
                 const name = formData.get('name') as string;
                 const email = formData.get('email') as string;
@@ -358,11 +405,10 @@ export default function Home() {
               {formMessage && (
                 <motion.div
                   variants={itemVariants}
-                  className={`p-4 rounded-xl text-sm font-light ${
-                    formMessage.includes('Thank you')
-                      ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                      : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
-                  }`}
+                  className={`p-4 rounded-xl text-sm font-light ${formMessage.includes('Thank you')
+                    ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                    : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+                    }`}
                 >
                   {formMessage}
                 </motion.div>
@@ -378,7 +424,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-warm-gray-100 dark:bg-black text-warm-gray-700 dark:text-warm-gray-300 py-8 border-t border-warm-gray-200 dark:border-slate-800">
+      <footer className="bg-warm-gray-100 dark:bg-black text-white py-8 border-t border-warm-gray-200">
         <Container className="text-center">
           <p className="font-light">
             © {new Date().getFullYear()} Wesley Poth. All rights reserved.
