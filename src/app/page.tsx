@@ -7,7 +7,29 @@ import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
 import { ProjectCard } from '@/components/ProjectCard';
 
+export function useTypewriter(text: string, speed: number = 20) {
+  const [output, setOutput] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    setOutput("");
+
+    const interval = setInterval(() => {
+      setOutput(text.slice(0, i));
+      i++;
+
+      if (i > text.length) clearInterval(interval);
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
+  return output;
+}
 export default function Home() {
+  const typedText = useTypewriter(
+  "A developer and designer focused on creating beautiful, functional web experiences with thoughtful design and clean code."
+);
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState('');
@@ -141,7 +163,7 @@ export default function Home() {
               variants={itemVariants}
               className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12 font-light leading-relaxed"
             >
-              A developer and designer focused on creating beautiful, functional web experiences with thoughtful design and clean code.
+              {typedText}
             </motion.p>
 
             <motion.div
