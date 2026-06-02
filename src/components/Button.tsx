@@ -9,6 +9,7 @@ interface ButtonProps
   href?: string;
   variant?: 'primary' | 'secondary';
   className?: string;
+  disabled?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   className = '',
   type = 'button',
+  disabled = false,
   ...props
 }) => {
   const baseStyles =
@@ -25,10 +27,10 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles =
     variant === 'primary'
-      ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:from-orange-600 hover:to-orange-700'
-      : 'border-2 border-orange-500 text-orange-600 dark:border-orange-400 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors';
+      ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white dark:from-orange-600 dark:to-orange-700 hover:shadow-lg hover:from-orange-600 hover:to-orange-700 dark:hover:from-orange-700 dark:hover:to-orange-800 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100'
+      : 'border-2 border-orange-500 text-orange-600 dark:border-orange-400 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors disabled:opacity-60 disabled:cursor-not-allowed';
 
-  if (href) {
+  if (href && !disabled) {
     return (
       <a
         href={href}
@@ -43,6 +45,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`${baseStyles} ${variantStyles} ${className}`}
       {...props}
     >

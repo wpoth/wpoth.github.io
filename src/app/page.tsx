@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, easeOut } from 'framer-motion';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
 import { ProjectCard } from '@/components/ProjectCard';
 
 export default function Home() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formMessage, setFormMessage] = useState('');
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -67,7 +70,7 @@ export default function Home() {
       {/* Hero Section */}
       <section
         id="hero"
-        className="min-h-screen flex items-center justify-center pt-20 pb-20 bg-gradient-to-br from-warm-gray-50 to-warm-gray-100 dark:from-warm-gray-900 dark:to-warm-gray-800"
+        className="min-h-screen flex items-center justify-center pt-20 pb-20 bg-white"
       >
         <Container>
           <motion.div
@@ -78,7 +81,7 @@ export default function Home() {
           >
             <motion.h1
               variants={itemVariants}
-              className="text-6xl md:text-8xl font-light mb-6 tracking-tight text-orange-600 dark:text-orange-400"
+              className="text-6xl md:text-8xl font-light mb-6 tracking-tight text-orange-600"
             >
               Crafting Digital
               <br />
@@ -89,7 +92,7 @@ export default function Home() {
 
             <motion.p
               variants={itemVariants}
-              className="text-xl md:text-2xl text-warm-gray-600 dark:text-warm-gray-300 max-w-3xl mx-auto mb-12 font-light leading-relaxed"
+              className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12 font-light leading-relaxed"
             >
               A developer and designer focused on creating beautiful, functional web experiences with thoughtful design and clean code.
             </motion.p>
@@ -125,7 +128,7 @@ export default function Home() {
       {/* Projects Section */}
       <section
         id="projects"
-        className="py-32 bg-white dark:bg-warm-gray-900"
+        className="py-32 bg-white"
       >
         <Container>
           <motion.div
@@ -135,10 +138,10 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <h2 className="text-5xl md:text-6xl font-light mb-6 text-warm-gray-900 dark:text-white">
+            <h2 className="text-5xl md:text-6xl font-light mb-6 text-black">
               Featured Projects
             </h2>
-            <p className="text-warm-gray-600 dark:text-warm-gray-400 text-lg max-w-2xl mx-auto font-light">
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto font-light\">
               A selection of work showcasing modern web development and thoughtful design
             </p>
           </motion.div>
@@ -166,7 +169,7 @@ export default function Home() {
       {/* About Section */}
       <section
         id="about"
-        className="py-32 bg-warm-gray-50 dark:bg-warm-gray-900"
+        className="py-32 bg-gray-50"
       >
         <Container>
           <motion.div
@@ -176,7 +179,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto"
           >
-            <h2 className="text-5xl md:text-6xl font-light mb-12 text-center text-warm-gray-900 dark:text-white">
+            <h2 className="text-5xl md:text-6xl font-light mb-12 text-center text-black">
               About Me
             </h2>
 
@@ -203,7 +206,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="space-y-6"
               >
-                <p className="text-warm-gray-700 dark:text-warm-gray-300 text-lg font-light leading-relaxed">
+                <p className="text-black text-lg font-light leading-relaxed\">
                   I'm a developer with a passion for creating elegant solutions
                   to complex problems. Over the past few years, I've worked on a
                   variety of projects ranging from small startups to large-scale
@@ -228,7 +231,7 @@ export default function Home() {
       {/* Contact Section */}
       <section
         id="contact"
-        className="py-32 bg-white dark:bg-warm-gray-900"
+        className="py-32 bg-white"
       >
         <Container>
           <motion.div
@@ -238,10 +241,10 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-5xl md:text-6xl font-light mb-6 text-warm-gray-900 dark:text-white">
+            <h2 className="text-5xl md:text-6xl font-light mb-6 text-black">
               Let's Connect
             </h2>
-            <p className="text-warm-gray-600 dark:text-warm-gray-400 text-lg mb-12 font-light">
+            <p className="text-gray-600 text-lg mb-12 font-light\">
               I'm always open to new opportunities and collaborations. Feel free
               to reach out if you'd like to discuss a project or just say hello!
             </p>
@@ -255,10 +258,10 @@ export default function Home() {
             >
               <motion.div variants={itemVariants}>
                 <a
-                  href="mailto:hello@example.com"
-                  className="text-2xl text-orange-500 hover:text-orange-600 dark:hover:text-orange-400 transition-colors font-light"
+                  href="mailto:w.poth1001@gmail.com"
+                  className="text-2xl text-orange-600 hover:text-orange-700 transition-colors font-light"
                 >
-                  hello@example.com
+                  w.poth1001@gmail.com
                 </a>
               </motion.div>
               <motion.div
@@ -266,19 +269,17 @@ export default function Home() {
                 className="flex justify-center gap-8 text-base"
               >
                 <a
-                  href="#"
-                  className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
-                >
-                  Twitter
-                </a>
-                <a
-                  href="#"
+                  href="https://github.com/wpoth"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
                 >
                   GitHub
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/wesley-poth-41a1262b4/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-warm-gray-600 dark:text-warm-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors font-light"
                 >
                   LinkedIn
@@ -291,37 +292,84 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="space-y-4 bg-warm-gray-50 dark:bg-warm-gray-800 p-8 rounded-2xl"
-              onSubmit={(e) => {
+              className="space-y-4 bg-gray-50 p-8 rounded-2xl"
+              onSubmit={async (e) => {
                 e.preventDefault();
-                alert('Thank you for your message! I will get back to you soon.');
-                (e.target as HTMLFormElement).reset();
+                
+                const formData = new FormData(e.currentTarget);
+                const name = formData.get('name') as string;
+                const email = formData.get('email') as string;
+                const message = formData.get('message') as string;
+
+                setIsSubmitting(true);
+                setFormMessage('');
+
+                try {
+                  const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message }),
+                  });
+
+                  const data = await response.json();
+
+                  if (!response.ok) {
+                    throw new Error(data.error || 'Failed to send email');
+                  }
+
+                  setFormMessage('Thank you! I\'ll get back to you soon.');
+                  (e.target as HTMLFormElement).reset();
+                } catch (error) {
+                  setFormMessage(
+                    error instanceof Error ? error.message : 'Failed to send email'
+                  );
+                } finally {
+                  setIsSubmitting(false);
+                }
               }}
             >
               <motion.input
                 variants={itemVariants}
                 type="text"
+                name="name"
                 placeholder="Your Name"
                 required
-                className="w-full px-6 py-3 bg-white dark:bg-warm-gray-700 rounded-xl border border-warm-gray-200 dark:border-warm-gray-600 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 dark:focus:ring-orange-500/20 transition-all font-light"
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 bg-white text-warm-gray-900  rounded-xl border border-warm-gray-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 transition-all font-light disabled:opacity-50"
               />
               <motion.input
                 variants={itemVariants}
                 type="email"
+                name="email"
                 placeholder="Your Email"
                 required
-                className="w-full px-6 py-3 bg-white dark:bg-warm-gray-700 rounded-xl border border-warm-gray-200 dark:border-warm-gray-600 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 dark:focus:ring-orange-500/20 transition-all font-light"
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 bg-white text-warm-gray-900 rounded-xl border border-warm-gray-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 transition-all font-light disabled:opacity-50"
               />
               <motion.textarea
                 variants={itemVariants}
+                name="message"
                 placeholder="Your Message"
                 rows={5}
                 required
-                className="w-full px-6 py-3 bg-white dark:bg-warm-gray-700 rounded-xl border border-warm-gray-200 dark:border-warm-gray-600 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 dark:focus:ring-orange-500/20 transition-all resize-none font-light"
+                disabled={isSubmitting}
+                className="w-full px-6 py-3 bg-white text-warm-gray-900 rounded-xl border border-warm-gray-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 transition-all resize-none font-light disabled:opacity-50"
               />
+              {formMessage && (
+                <motion.div
+                  variants={itemVariants}
+                  className={`p-4 rounded-xl text-sm font-light ${
+                    formMessage.includes('Thank you')
+                      ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                      : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+                  }`}
+                >
+                  {formMessage}
+                </motion.div>
+              )}
               <motion.div variants={itemVariants}>
-                <Button type="submit" className="w-full">
-                  Send Message
+                <Button type="submit" disabled={isSubmitting} className="w-full">
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
               </motion.div>
             </motion.form>
@@ -330,7 +378,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-warm-gray-900 dark:bg-warm-gray-950 text-warm-gray-400 py-8 border-t border-warm-gray-800">
+      <footer className="bg-warm-gray-100 dark:bg-black text-warm-gray-700 dark:text-warm-gray-300 py-8 border-t border-warm-gray-200 dark:border-slate-800">
         <Container className="text-center">
           <p className="font-light">
             © {new Date().getFullYear()} Wesley Poth. All rights reserved.
