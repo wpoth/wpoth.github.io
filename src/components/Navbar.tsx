@@ -26,18 +26,24 @@ export const Navbar: React.FC = () => {
     { label: "Contact", id: "contact" },
   ];
   const drawerVariants = {
-    hidden: { x: "100%" },
-    visible: {
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 25,
-        staggerChildren: 0.08,
-      },
+  hidden: { x: '100%' },
+  visible: {
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 260,
+      damping: 25,
+      when: 'beforeChildren',
+      staggerChildren: 0.08,
     },
-    exit: { x: "100%", transition: { duration: 0.2 } },
-  };
+  },
+  exit: {
+    x: '100%',
+    transition: {
+      duration: 0.2,
+    },
+  },
+} as const;
   const itemVariants = {
     hidden: { opacity: 0, x: 20 },
     visible: { opacity: 1, x: 0 },
