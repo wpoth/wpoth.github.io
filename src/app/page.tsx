@@ -95,9 +95,9 @@ export default function Home() {
       tags: ['Symfony', 'PHP', 'MySQL', 'Tailwind CSS'],
     },
     {
-      title: 'CRUD Application',
+      title: 'Healthcare administration system',
       description:
-        'A full-featured CRUD application built with Symfony, featuring real-time updates and seamless integration.',
+        'A website that uses a database from Nedap to acces client records, handle client administration and get a history of all the clients.',
       tags: ['Symfony', 'PHP', 'MySQL', 'Tailwind CSS'],
     },
     {
@@ -113,7 +113,7 @@ export default function Home() {
       tags: ['Swift', 'iOS', 'Android'],
     },
     {
-      title: 'Portfolio :)',
+      title: 'This Portfolio :)',
       description:
         'Portfolio website built with Next.js, showcasing projects and skills with a focus on performance and SEO.',
       tags: ['Next.js', 'Framer Motion', 'Gsap', 'SEO'],
