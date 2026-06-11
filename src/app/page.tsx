@@ -26,13 +26,16 @@ export function useTypewriter(text: string, speed: number = 20) {
 
   return output;
 }
+
 export default function Home() {
   const typedText = useTypewriter(
-  "A developer and designer focused on creating beautiful, functional web experiences with thoughtful design and clean code."
-);
+    "A developer and designer focused on creating beautiful, functional web experiences with thoughtful design and clean code."
+  );
+
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formMessage, setFormMessage] = useState('');
+
   useEffect(() => {
     const update = () => {
       const scrollY = window.scrollY;
@@ -64,6 +67,7 @@ export default function Home() {
 
     return () => window.removeEventListener('scroll', update);
   }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -87,6 +91,38 @@ export default function Home() {
     },
   };
 
+  const featuredProject = {
+    title: 'VibeForge',
+    eyebrow: 'Featured project',
+    description:
+      'An AI-powered Spotify playlist manager where users can log in with Spotify, view and manage their playlists, remove tracks, generate playlist analysis, and discover new tracks based on a vibe or artist.',
+    tags: [
+      'Next.js',
+      'TypeScript',
+      'Tailwind CSS',
+      'NextAuth',
+      'Spotify Web API',
+      'AI Integration',
+      'Vercel',
+    ],
+    highlights: [
+      'Built secure Spotify authentication with NextAuth and OAuth scopes.',
+      'Integrated Spotify playlist, track, search, create, and update flows.',
+      'Added AI-generated playlist analysis and track suggestions.',
+      'Designed a responsive dashboard-style interface with smooth interactions.',
+    ],
+    links: [
+      {
+        label: 'View live project',
+        href: 'https://vibeforge-brown.vercel.app/',
+      },
+      {
+        label: 'View code',
+        href: 'https://github.com/wpoth/VibeForge',
+      },
+    ],
+  };
+
   const projects = [
     {
       title: 'E-Commerce Platform',
@@ -97,31 +133,30 @@ export default function Home() {
     {
       title: 'Healthcare administration system',
       description:
-        'A website that uses a database from Nedap to acces client records, handle client administration and get a history of all the clients.',
-      tags: ['Symfony', 'PHP', 'MySQL', 'Tailwind CSS'],
+        'A web application that uses Nedap database data to access client records, handle client administration, and show client history.',
+      tags: ['PHP', 'MySQL', 'PHPMailer', 'Chart.js'],
     },
     {
       title: 'Analytics Dashboard',
       description:
         'Real-time analytics dashboard with interactive charts and data visualization for business intelligence.',
-      tags: ['HTML, CSS & JavaScript', 'Chart.JS', 'Node.js', 'MySQL'],
+      tags: ['HTML', 'CSS', 'JavaScript', 'Chart.js', 'MySQL'],
     },
     {
       title: 'Mobile App',
       description:
-        'Quiz app made in swift that has a simple and intuitive interface, allowing users to test their knowledge on various topics.',
-      tags: ['Swift', 'iOS', 'Android'],
+        'Quiz app made in Swift with a simple and intuitive interface, allowing users to test their knowledge on various topics.',
+      tags: ['Swift', 'iOS'],
     },
     {
       title: 'This Portfolio :)',
       description:
         'Portfolio website built with Next.js, showcasing projects and skills with a focus on performance and SEO.',
-      tags: ['Next.js', 'Framer Motion', 'Gsap', 'SEO'],
-    }
+      tags: ['Next.js', 'Framer Motion', 'Tailwind CSS', 'SEO'],
+    },
   ];
 
   return (
-
     <div className="w-full">
       <div className="fixed top-0 left-0 w-full h-[2px] flex z-[60]">
         {navItems.map((item) => (
@@ -136,6 +171,7 @@ export default function Home() {
           </div>
         ))}
       </div>
+
       {/* Hero Section */}
       <section
         id="hero"
@@ -195,10 +231,7 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section
-        id="projects"
-        className="py-32 bg-white"
-      >
+      <section id="projects" className="py-32 bg-white">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -210,7 +243,7 @@ export default function Home() {
             <h2 className="text-5xl md:text-6xl font-light mb-6 text-black">
               Featured Projects
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto font-light\">
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto font-light">
               A selection of work showcasing modern web development and thoughtful design
             </p>
           </motion.div>
@@ -220,26 +253,37 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="space-y-8"
           >
-            {projects.map((project, index) => (
-              <motion.div key={index} variants={itemVariants}>
-                <ProjectCard
-                  title={project.title}
-                  description={project.description}
-                  tags={project.tags}
-                />
-              </motion.div>
-            ))}
+            <motion.div variants={itemVariants}>
+              <ProjectCard
+                title={featuredProject.title}
+                eyebrow={featuredProject.eyebrow}
+                description={featuredProject.description}
+                tags={featuredProject.tags}
+                highlights={featuredProject.highlights}
+                links={featuredProject.links}
+                featured
+              />
+            </motion.div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project, index) => (
+                <motion.div key={index} variants={itemVariants}>
+                  <ProjectCard
+                    title={project.title}
+                    description={project.description}
+                    tags={project.tags}
+                  />
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </Container>
       </section>
 
       {/* About Section */}
-      <section
-        id="about"
-        className="py-32 bg-gray-50"
-      >
+      <section id="about" className="py-32 bg-gray-50">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -275,7 +319,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="space-y-6"
               >
-                <p className="text-black text-lg font-light leading-relaxed\">
+                <p className="text-black text-lg font-light leading-relaxed">
                   I'm a developer with a passion for creating elegant solutions
                   to complex problems. Over the past few years, I've worked on a
                   variety of projects ranging from small startups to large-scale
@@ -298,10 +342,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section
-        id="contact"
-        className="py-32 bg-white"
-      >
+      <section id="contact" className="py-32 bg-white">
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -313,7 +354,7 @@ export default function Home() {
             <h2 className="text-5xl md:text-6xl font-light mb-6 text-black">
               Let's Connect
             </h2>
-            <p className="text-gray-600 text-lg mb-12 font-light\">
+            <p className="text-gray-600 text-lg mb-12 font-light">
               I'm always open to new opportunities and collaborations. Feel free
               to reach out if you'd like to discuss a project or just say hello!
             </p>
@@ -404,7 +445,7 @@ export default function Home() {
                 placeholder="Your Name"
                 required
                 disabled={isSubmitting}
-                className="w-full px-6 py-3 bg-white text-warm-gray-900  rounded-xl border border-warm-gray-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 transition-all font-light disabled:opacity-50"
+                className="w-full px-6 py-3 bg-white text-warm-gray-900 rounded-xl border border-warm-gray-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/10 transition-all font-light disabled:opacity-50"
               />
               <motion.input
                 variants={itemVariants}
@@ -428,8 +469,8 @@ export default function Home() {
                 <motion.div
                   variants={itemVariants}
                   className={`p-4 rounded-xl text-sm font-light ${formMessage.includes('Thank you')
-                    ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                    : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+                      ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                      : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                     }`}
                 >
                   {formMessage}
