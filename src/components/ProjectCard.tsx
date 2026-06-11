@@ -55,12 +55,22 @@ export function ProjectCard({
       </div>
 
       <motion.div
-        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-300 via-orange-600 to-orange-300"
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
+        className="pointer-events-none absolute left-6 right-6 top-0 h-px overflow-hidden"
+        initial={{ opacity: 0, scaleX: 0.65 }}
+        whileInView={{ opacity: 1, scaleX: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        style={{ transformOrigin: 'left' }}
+        transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformOrigin: 'center' }}
+      >
+        <div className="h-full w-full bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
+      </motion.div>
+
+      <motion.div
+        className="pointer-events-none absolute left-10 right-10 top-0 h-8 bg-gradient-to-b from-orange-500/12 to-transparent blur-xl"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.1 }}
       />
 
       {featured && (
