@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,22 +13,6 @@ interface ExperienceItem {
     description: string;
     achievements: string[];
     technologies: string[];
-}
-
-interface DotPosition {
-    x: number;
-    y: number;
-}
-
-interface CardBounds {
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
-    centerY: number;
-    anchorX: number;
-    anchorY: number;
-    anchorSide: 'left' | 'right';
 }
 
 const experiences: ExperienceItem[] = [
@@ -96,240 +80,81 @@ const experiences: ExperienceItem[] = [
     },
 ];
 
-function getCardLoopPath(card: CardBounds) {
-    const radius = 28;
-    const inset = 10;
-
-    const { left, right, top, bottom, anchorX, anchorY, anchorSide } = card;
-
-    if (anchorSide === 'right') {
-        return [
-            `L ${right + inset} ${anchorY}`,
-            `L ${right + inset} ${top + radius}`,
-            `Q ${right + inset} ${top} ${right - radius} ${top}`,
-            `L ${left + radius} ${top}`,
-            `Q ${left} ${top} ${left} ${top + radius}`,
-            `L ${left} ${bottom - radius}`,
-            `Q ${left} ${bottom} ${left + radius} ${bottom}`,
-            `L ${right - radius} ${bottom}`,
-            `Q ${right + inset} ${bottom} ${right + inset} ${bottom - radius}`,
-            `L ${right + inset} ${anchorY}`,
-            `L ${anchorX} ${anchorY}`,
-        ].join(' ');
-    }
-
-    return [
-        `L ${left - inset} ${anchorY}`,
-        `L ${left - inset} ${top + radius}`,
-        `Q ${left - inset} ${top} ${left + radius} ${top}`,
-        `L ${right - radius} ${top}`,
-        `Q ${right} ${top} ${right} ${top + radius}`,
-        `L ${right} ${bottom - radius}`,
-        `Q ${right} ${bottom} ${right - radius} ${bottom}`,
-        `L ${left + radius} ${bottom}`,
-        `Q ${left - inset} ${bottom} ${left - inset} ${bottom - radius}`,
-        `L ${left - inset} ${anchorY}`,
-        `L ${anchorX} ${anchorY}`,
-    ].join(' ');
-}
-
-function getConnectorPath(from: CardBounds, to: CardBounds) {
-    const midY = from.anchorY + (to.anchorY - from.anchorY) / 2;
-
-    return [
-        `C ${from.anchorX} ${midY}`,
-        `${to.anchorX} ${midY}`,
-        `${to.anchorX} ${to.anchorY}`,
-    ].join(' ');
-}
-
 export function ExperienceTimeline() {
     const sectionRef = useRef<HTMLElement | null>(null);
-    const timelineRef = useRef<HTMLDivElement | null>(null);
     const pathRef = useRef<SVGPathElement | null>(null);
-    const cardShellRefs = useRef<Array<HTMLElement | null>>([]);
-
-    const [svgPath, setSvgPath] = useState('');
-    const [dots, setDots] = useState<DotPosition[]>([]);
-    const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
 
     useLayoutEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
 
         const section = sectionRef.current;
-        const timeline = timelineRef.current;
+        const path = pathRef.current;
 
-        if (!section || !timeline) return;
+        if (!section || !path) return;
 
-        let animationContext: gsap.Context | null = null;
+        const context = gsap.context(() => {
+            const pathLength = path.getTotalLength();
 
-        const buildPath = () => {
-            const timelineRect = timeline.getBoundingClientRect();
-            const isDesktop = window.innerWidth >= 768;
-
-            const cards: CardBounds[] = cardShellRefs.current
-                .filter(Boolean)
-                .map((card) => {
-                    const rect = card!.getBoundingClientRect();
-
-                    const padding = isDesktop ? 20 : 14;
-                    const left = rect.left - timelineRect.left - padding;
-                    const right = rect.right - timelineRect.left + padding;
-                    const top = rect.top - timelineRect.top - padding;
-                    const bottom = rect.bottom - timelineRect.top + padding;
-                    const centerY = top + (bottom - top) / 2;
-
-                    const cardCenterX = left + (right - left) / 2;
-                    const timelineCenterX = timelineRect.width / 2;
-
-                    const anchorSide: 'left' | 'right' = !isDesktop
-                        ? 'left'
-                        : cardCenterX < timelineCenterX
-                            ? 'right'
-                            : 'left';
-
-                    const anchorX = anchorSide === 'right' ? right : left;
-
-                    return {
-                        left,
-                        right,
-                        top,
-                        bottom,
-                        centerY,
-                        anchorX,
-                        anchorY: centerY,
-                        anchorSide,
-                    };
-                });
-
-            if (cards.length === 0) return;
-
-            const pathParts: string[] = [];
-
-            cards.forEach((card, index) => {
-                if (index === 0) {
-                    pathParts.push(`M ${card.anchorX} ${card.anchorY}`);
-                }
-
-                pathParts.push(getCardLoopPath(card));
-
-                const nextCard = cards[index + 1];
-
-                if (nextCard) {
-                    pathParts.push(getConnectorPath(card, nextCard));
-                }
+            gsap.set(path, {
+                strokeDasharray: pathLength,
+                strokeDashoffset: pathLength,
             });
 
-            setSvgPath(pathParts.join(' '));
-
-            setDots(
-                cards.map((card) => ({
-                    x: card.anchorX,
-                    y: card.anchorY,
-                }))
-            );
-
-            setSvgSize({
-                width: timelineRect.width,
-                height: timelineRect.height,
+            gsap.to(path, {
+                strokeDashoffset: 0,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 70%',
+                    end: 'bottom 35%',
+                    scrub: 0.7,
+                },
             });
 
-            requestAnimationFrame(() => {
-                const path = pathRef.current;
-
-                if (!path) return;
-
-                const pathLength = path.getTotalLength();
-
-                animationContext?.revert();
-
-                animationContext = gsap.context(() => {
-                    gsap.set(path, {
-                        strokeDasharray: pathLength,
-                        strokeDashoffset: pathLength,
-                    });
-
-                    gsap.to(path, {
-                        strokeDashoffset: 0,
-                        ease: 'none',
+            gsap.utils.toArray<HTMLElement>('.experience-card').forEach((card) => {
+                gsap.fromTo(
+                    card,
+                    {
+                        opacity: 0,
+                        y: 28,
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.7,
+                        ease: 'power3.out',
                         scrollTrigger: {
-                            trigger: timeline,
-                            start: 'top 75%',
-                            end: 'bottom 35%',
-                            scrub: 0.8,
-                            invalidateOnRefresh: true,
+                            trigger: card,
+                            start: 'top 84%',
+                            toggleActions: 'play none none reverse',
                         },
-                    });
-
-                    gsap.utils
-                        .toArray<HTMLElement>('.experience-card-content')
-                        .forEach((card, index) => {
-                            const direction = index % 2 === 0 ? -70 : 70;
-
-                            gsap.fromTo(
-                                card,
-                                {
-                                    opacity: 0,
-                                    x: window.innerWidth >= 768 ? direction : 0,
-                                    y: 44,
-                                    scale: 0.97,
-                                },
-                                {
-                                    opacity: 1,
-                                    x: 0,
-                                    y: 0,
-                                    scale: 1,
-                                    duration: 0.85,
-                                    ease: 'power3.out',
-                                    scrollTrigger: {
-                                        trigger: card,
-                                        start: 'top 82%',
-                                        toggleActions: 'play none none reverse',
-                                    },
-                                }
-                            );
-                        });
-
-                    gsap.utils.toArray<HTMLElement>('.experience-dot').forEach((dot) => {
-                        gsap.fromTo(
-                            dot,
-                            {
-                                opacity: 0,
-                                scale: 0,
-                            },
-                            {
-                                opacity: 1,
-                                scale: 1,
-                                duration: 0.45,
-                                ease: 'back.out(1.9)',
-                                scrollTrigger: {
-                                    trigger: dot,
-                                    start: 'top 85%',
-                                    toggleActions: 'play none none reverse',
-                                },
-                            }
-                        );
-                    });
-
-                    ScrollTrigger.refresh();
-                }, section);
+                    }
+                );
             });
-        };
 
-        buildPath();
+            gsap.utils.toArray<HTMLElement>('.experience-dot').forEach((dot) => {
+                gsap.fromTo(
+                    dot,
+                    {
+                        opacity: 0,
+                        scale: 0.7,
+                    },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 0.35,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: dot,
+                            start: 'top 86%',
+                            toggleActions: 'play none none reverse',
+                        },
+                    }
+                );
+            });
+        }, section);
 
-        const resizeObserver = new ResizeObserver(() => {
-            buildPath();
-        });
-
-        resizeObserver.observe(timeline);
-        window.addEventListener('resize', buildPath);
-
-        return () => {
-            resizeObserver.disconnect();
-            window.removeEventListener('resize', buildPath);
-            animationContext?.revert();
-        };
+        return () => context.revert();
     }, []);
 
     return (
@@ -355,113 +180,101 @@ export function ExperienceTimeline() {
                     </p>
                 </div>
 
-                <div ref={timelineRef} className="relative">
+                <div className="relative mx-auto max-w-5xl">
                     <svg
-                        className="pointer-events-none absolute left-0 top-0 z-0 overflow-visible"
-                        width={svgSize.width}
-                        height={svgSize.height}
-                        viewBox={`0 0 ${svgSize.width} ${svgSize.height}`}
+                        className="pointer-events-none absolute left-4 top-0 z-0 h-full w-10 overflow-visible md:left-1/2 md:-translate-x-1/2"
+                        viewBox="0 0 80 1000"
+                        preserveAspectRatio="none"
                         fill="none"
                         aria-hidden="true"
                     >
                         <path
-                            d={svgPath}
-                            stroke="rgba(251, 146, 60, 0.18)"
-                            strokeWidth="2"
+                            d="M40 0 C 18 110, 62 210, 40 320 C 18 430, 62 530, 40 640 C 18 750, 62 850, 40 1000"
+                            stroke="rgba(251, 146, 60, 0.22)"
+                            strokeWidth="3"
                             strokeLinecap="round"
-                            strokeLinejoin="round"
                         />
                         <path
                             ref={pathRef}
-                            d={svgPath}
+                            d="M40 0 C 18 110, 62 210, 40 320 C 18 430, 62 530, 40 640 C 18 750, 62 850, 40 1000"
                             stroke="rgb(234, 88, 12)"
                             strokeWidth="3"
                             strokeLinecap="round"
-                            strokeLinejoin="round"
                         />
                     </svg>
 
-                    {dots.map((dot, index) => (
-                        <div
-                            key={`${dot.x}-${dot.y}-${index}`}
-                            className="experience-dot pointer-events-none absolute z-20 flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 shadow-lg shadow-orange-600/20"
-                            style={{
-                                left: dot.x,
-                                top: dot.y,
-                                transform: 'translate(-50%, -50%)',
-                            }}
-                        >
-                            <div className="h-3 w-3 rounded-full bg-white" />
-                        </div>
-                    ))}
-
-                    <div className="relative z-10 space-y-16 md:space-y-20">
+                    <div className="relative z-10 space-y-12 md:space-y-16">
                         {experiences.map((experience, index) => {
                             const isLeft = index % 2 === 0;
 
                             return (
-                                <article
+                                <div
                                     key={`${experience.role}-${experience.company}`}
-                                    ref={(element) => {
-                                        cardShellRefs.current[index] = element;
-                                    }}
-                                    className={`relative md:w-[calc(50%-3rem)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'
-                                        }`}
+                                    className="relative grid gap-6 pl-14 md:grid-cols-[1fr_80px_1fr] md:pl-0"
                                 >
-                                    <div className="experience-card-content rounded-[1.75rem] border border-orange-100 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl">
-                                        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                                            <div>
-                                                <p className="mb-2 inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-orange-700">
-                                                    {experience.type}
-                                                </p>
-                                                <h3 className="text-2xl font-semibold text-black">
-                                                    {experience.role}
-                                                </h3>
-                                                <p className="mt-1 text-base font-light text-orange-700">
-                                                    {experience.company}
-                                                </p>
+                                    <div
+                                        className={`experience-card ${isLeft ? 'md:col-start-1' : 'md:col-start-3'
+                                            }`}
+                                    >
+                                        <article className="rounded-[1.75rem] border border-orange-100 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                                            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                                <div>
+                                                    <p className="mb-2 inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-orange-700">
+                                                        {experience.type}
+                                                    </p>
+                                                    <h3 className="text-2xl font-semibold text-black">
+                                                        {experience.role}
+                                                    </h3>
+                                                    <p className="mt-1 text-base font-light text-orange-700">
+                                                        {experience.company}
+                                                    </p>
+                                                </div>
+
+                                                <div className="text-left sm:text-right">
+                                                    <p className="text-sm font-medium text-black">
+                                                        {experience.period}
+                                                    </p>
+                                                    <p className="text-sm font-light text-gray-500">
+                                                        {experience.location}
+                                                    </p>
+                                                </div>
                                             </div>
 
-                                            <div className="text-left sm:text-right">
-                                                <p className="text-sm font-medium text-black">
-                                                    {experience.period}
-                                                </p>
-                                                <p className="text-sm font-light text-gray-500">
-                                                    {experience.location}
-                                                </p>
-                                            </div>
-                                        </div>
+                                            <p className="mb-5 font-light leading-relaxed text-gray-700">
+                                                {experience.description}
+                                            </p>
 
-                                        <p className="mb-5 font-light leading-relaxed text-gray-700">
-                                            {experience.description}
-                                        </p>
+                                            <ul className="mb-6 space-y-3">
+                                                {experience.achievements.map((achievement) => (
+                                                    <li
+                                                        key={achievement}
+                                                        className="flex gap-3 text-sm text-gray-700"
+                                                    >
+                                                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-600" />
+                                                        <span className="font-light leading-relaxed">
+                                                            {achievement}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
 
-                                        <ul className="mb-6 space-y-3">
-                                            {experience.achievements.map((achievement) => (
-                                                <li
-                                                    key={achievement}
-                                                    className="flex gap-3 text-sm text-gray-700"
-                                                >
-                                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-600" />
-                                                    <span className="font-light leading-relaxed">
-                                                        {achievement}
+                                            <div className="flex flex-wrap gap-2">
+                                                {experience.technologies.map((technology) => (
+                                                    <span
+                                                        key={technology}
+                                                        className="rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-sm font-light text-orange-700"
+                                                    >
+                                                        {technology}
                                                     </span>
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                        <div className="flex flex-wrap gap-2">
-                                            {experience.technologies.map((technology) => (
-                                                <span
-                                                    key={technology}
-                                                    className="rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-sm font-light text-orange-700"
-                                                >
-                                                    {technology}
-                                                </span>
-                                            ))}
-                                        </div>
+                                                ))}
+                                            </div>
+                                        </article>
                                     </div>
-                                </article>
+
+                                    <div className="experience-dot absolute left-0 top-8 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 shadow-lg shadow-orange-600/20 md:left-1/2 md:-translate-x-1/2">
+                                        <div className="h-3 w-3 rounded-full bg-white" />
+                                    </div>
+                                </div>
                             );
                         })}
                     </div>
