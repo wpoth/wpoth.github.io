@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -15,15 +15,31 @@ interface ExperienceItem {
     technologies: string[];
 }
 
+interface DotPosition {
+    x: number;
+    y: number;
+}
+
+interface CardBounds {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    centerY: number;
+    anchorX: number;
+    anchorY: number;
+    anchorSide: 'left' | 'right';
+}
+
 const experiences: ExperienceItem[] = [
     {
         role: 'ICT employee',
         company: 'Hollandse Zorggroep',
         location: 'Berkel en Rodenrijs',
-        period: 'april 2026 - june 2026',
-        type: 'Fulltime job',
+        period: 'April 2026 - June 2026',
+        type: 'Full-time job',
         description:
-            'Worked on an internal healthcare administration web application used to support client processes, task tracking, email automation, and data visibility. Helped interns with software projects and educated them where necessary',
+            'Worked on an internal healthcare administration web application used to support client processes, task tracking, email automation, and data visibility. Helped interns with software projects and educated them where necessary.',
         achievements: [
             'Assisted three interns with projects.',
             'Helped setting up a work from home environment.',
@@ -35,7 +51,7 @@ const experiences: ExperienceItem[] = [
         role: 'Software Developer Intern',
         company: 'Hollandse Zorggroep',
         location: 'Berkel en Rodenrijs',
-        period: '2025 - april 2026',
+        period: '2025 - April 2026',
         type: 'Internship',
         description:
             'Worked on an internal healthcare administration web application used to support client processes, task tracking, email automation, and data visibility.',
@@ -49,7 +65,7 @@ const experiences: ExperienceItem[] = [
     },
     {
         role: 'Full-stack Developer',
-        company: 'None (Personal project)',
+        company: 'VibeForge',
         location: 'Personal Project',
         period: '2026',
         type: 'Portfolio Project',
@@ -76,89 +92,242 @@ const experiences: ExperienceItem[] = [
             'Built portfolio projects focused on clean UI, responsive layouts, and practical functionality.',
             'Developed stronger interest in front-end development, UX/UI, and design-focused coding.',
         ],
-        technologies: ['PHP', 'JavaScript', 'SQL', 'HTML', 'CSS', 'Boostrap', 'NodeJS', 'Java'],
+        technologies: ['PHP', 'JavaScript', 'SQL', 'HTML', 'CSS', 'Bootstrap', 'NodeJS', 'Java'],
     },
 ];
 
+function getCardLoopPath(card: CardBounds) {
+    const radius = 28;
+    const inset = 10;
+
+    const { left, right, top, bottom, anchorX, anchorY, anchorSide } = card;
+
+    if (anchorSide === 'right') {
+        return [
+            `L ${right + inset} ${anchorY}`,
+            `L ${right + inset} ${top + radius}`,
+            `Q ${right + inset} ${top} ${right - radius} ${top}`,
+            `L ${left + radius} ${top}`,
+            `Q ${left} ${top} ${left} ${top + radius}`,
+            `L ${left} ${bottom - radius}`,
+            `Q ${left} ${bottom} ${left + radius} ${bottom}`,
+            `L ${right - radius} ${bottom}`,
+            `Q ${right + inset} ${bottom} ${right + inset} ${bottom - radius}`,
+            `L ${right + inset} ${anchorY}`,
+            `L ${anchorX} ${anchorY}`,
+        ].join(' ');
+    }
+
+    return [
+        `L ${left - inset} ${anchorY}`,
+        `L ${left - inset} ${top + radius}`,
+        `Q ${left - inset} ${top} ${left + radius} ${top}`,
+        `L ${right - radius} ${top}`,
+        `Q ${right} ${top} ${right} ${top + radius}`,
+        `L ${right} ${bottom - radius}`,
+        `Q ${right} ${bottom} ${right - radius} ${bottom}`,
+        `L ${left + radius} ${bottom}`,
+        `Q ${left - inset} ${bottom} ${left - inset} ${bottom - radius}`,
+        `L ${left - inset} ${anchorY}`,
+        `L ${anchorX} ${anchorY}`,
+    ].join(' ');
+}
+
+function getConnectorPath(from: CardBounds, to: CardBounds) {
+    const midY = from.anchorY + (to.anchorY - from.anchorY) / 2;
+
+    return [
+        `C ${from.anchorX} ${midY}`,
+        `${to.anchorX} ${midY}`,
+        `${to.anchorX} ${to.anchorY}`,
+    ].join(' ');
+}
+
 export function ExperienceTimeline() {
     const sectionRef = useRef<HTMLElement | null>(null);
-    const lineRef = useRef<HTMLDivElement | null>(null);
+    const timelineRef = useRef<HTMLDivElement | null>(null);
+    const pathRef = useRef<SVGPathElement | null>(null);
+    const cardRefs = useRef<Array<HTMLElement | null>>([]);
 
-    useEffect(() => {
+    const [svgPath, setSvgPath] = useState('');
+    const [dots, setDots] = useState<DotPosition[]>([]);
+    const [svgSize, setSvgSize] = useState({ width: 0, height: 0 });
+
+    useLayoutEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
 
         const section = sectionRef.current;
-        const line = lineRef.current;
+        const timeline = timelineRef.current;
 
-        if (!section || !line) return;
+        if (!section || !timeline) return;
 
-        const context = gsap.context(() => {
-            gsap.set(line, {
-                scaleY: 0,
-                transformOrigin: 'top center',
+        let animationContext: gsap.Context | null = null;
+
+        const buildPath = () => {
+            const timelineRect = timeline.getBoundingClientRect();
+            const isDesktop = window.innerWidth >= 768;
+
+            const cards: CardBounds[] = cardRefs.current
+                .filter(Boolean)
+                .map((card) => {
+                    const rect = card!.getBoundingClientRect();
+
+                    const padding = isDesktop ? 20 : 14;
+                    const left = rect.left - timelineRect.left - padding;
+                    const right = rect.right - timelineRect.left + padding;
+                    const top = rect.top - timelineRect.top - padding;
+                    const bottom = rect.bottom - timelineRect.top + padding;
+                    const centerY = top + (bottom - top) / 2;
+
+                    const cardCenterX = left + (right - left) / 2;
+                    const timelineCenterX = timelineRect.width / 2;
+
+                    const anchorSide: 'left' | 'right' = !isDesktop
+                        ? 'left'
+                        : cardCenterX < timelineCenterX
+                            ? 'right'
+                            : 'left';
+
+                    const anchorX = anchorSide === 'right' ? right : left;
+
+                    return {
+                        left,
+                        right,
+                        top,
+                        bottom,
+                        centerY,
+                        anchorX,
+                        anchorY: centerY,
+                        anchorSide,
+                    };
+                });
+
+            if (cards.length === 0) return;
+
+            const pathParts: string[] = [];
+
+            cards.forEach((card, index) => {
+                if (index === 0) {
+                    pathParts.push(`M ${card.anchorX} ${card.anchorY}`);
+                }
+
+                pathParts.push(getCardLoopPath(card));
+
+                const nextCard = cards[index + 1];
+
+                if (nextCard) {
+                    pathParts.push(getConnectorPath(card, nextCard));
+                }
             });
 
-            gsap.to(line, {
-                scaleY: 1,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 70%',
-                    end: 'bottom 30%',
-                    scrub: 0.7,
-                },
+            setSvgPath(pathParts.join(' '));
+
+            setDots(
+                cards.map((card) => ({
+                    x: card.anchorX,
+                    y: card.anchorY,
+                }))
+            );
+
+            setSvgSize({
+                width: timelineRect.width,
+                height: timelineRect.height,
             });
 
-            gsap.utils.toArray<HTMLElement>('.experience-card').forEach((card, index) => {
-                const direction = index % 2 === 0 ? -80 : 80;
+            requestAnimationFrame(() => {
+                const path = pathRef.current;
 
-                gsap.fromTo(
-                    card,
-                    {
-                        opacity: 0,
-                        x: direction,
-                        y: 40,
-                        scale: 0.96,
-                    },
-                    {
-                        opacity: 1,
-                        x: 0,
-                        y: 0,
-                        scale: 1,
-                        duration: 0.9,
-                        ease: 'power3.out',
+                if (!path) return;
+
+                const pathLength = path.getTotalLength();
+
+                animationContext?.revert();
+
+                animationContext = gsap.context(() => {
+                    gsap.set(path, {
+                        strokeDasharray: pathLength,
+                        strokeDashoffset: pathLength,
+                    });
+
+                    gsap.to(path, {
+                        strokeDashoffset: 0,
+                        ease: 'none',
                         scrollTrigger: {
-                            trigger: card,
-                            start: 'top 82%',
-                            toggleActions: 'play none none reverse',
+                            trigger: timeline,
+                            start: 'top 75%',
+                            end: 'bottom 35%',
+                            scrub: 0.8,
+                            invalidateOnRefresh: true,
                         },
-                    }
-                );
-            });
+                    });
 
-            gsap.utils.toArray<HTMLElement>('.experience-dot').forEach((dot) => {
-                gsap.fromTo(
-                    dot,
-                    {
-                        scale: 0,
-                        opacity: 0,
-                    },
-                    {
-                        scale: 1,
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: 'back.out(1.8)',
-                        scrollTrigger: {
-                            trigger: dot,
-                            start: 'top 84%',
-                            toggleActions: 'play none none reverse',
-                        },
-                    }
-                );
-            });
-        }, section);
+                    gsap.utils.toArray<HTMLElement>('.experience-card').forEach((card, index) => {
+                        const direction = index % 2 === 0 ? -70 : 70;
 
-        return () => context.revert();
+                        gsap.fromTo(
+                            card,
+                            {
+                                opacity: 0,
+                                x: window.innerWidth >= 768 ? direction : 0,
+                                y: 44,
+                                scale: 0.97,
+                            },
+                            {
+                                opacity: 1,
+                                x: 0,
+                                y: 0,
+                                scale: 1,
+                                duration: 0.85,
+                                ease: 'power3.out',
+                                scrollTrigger: {
+                                    trigger: card,
+                                    start: 'top 82%',
+                                    toggleActions: 'play none none reverse',
+                                },
+                            }
+                        );
+                    });
+
+                    gsap.utils.toArray<HTMLElement>('.experience-dot').forEach((dot) => {
+                        gsap.fromTo(
+                            dot,
+                            {
+                                opacity: 0,
+                                scale: 0,
+                            },
+                            {
+                                opacity: 1,
+                                scale: 1,
+                                duration: 0.45,
+                                ease: 'back.out(1.9)',
+                                scrollTrigger: {
+                                    trigger: dot,
+                                    start: 'top 85%',
+                                    toggleActions: 'play none none reverse',
+                                },
+                            }
+                        );
+                    });
+
+                    ScrollTrigger.refresh();
+                }, section);
+            });
+        };
+
+        buildPath();
+
+        const resizeObserver = new ResizeObserver(() => {
+            buildPath();
+        });
+
+        resizeObserver.observe(timeline);
+        window.addEventListener('resize', buildPath);
+
+        return () => {
+            resizeObserver.disconnect();
+            window.removeEventListener('resize', buildPath);
+            animationContext?.revert();
+        };
     }, []);
 
     return (
@@ -167,10 +336,6 @@ export function ExperienceTimeline() {
             ref={sectionRef}
             className="relative overflow-hidden bg-gray-50 py-32"
         >
-            <div className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-orange-200 md:block">
-                <div ref={lineRef} className="h-full w-full bg-orange-600" />
-            </div>
-
             <div className="absolute -left-32 top-20 h-80 w-80 rounded-full bg-orange-200/30 blur-3xl" />
             <div className="absolute -right-32 bottom-20 h-80 w-80 rounded-full bg-orange-300/20 blur-3xl" />
 
@@ -188,18 +353,57 @@ export function ExperienceTimeline() {
                     </p>
                 </div>
 
-                <div className="relative space-y-10 md:space-y-16">
-                    {experiences.map((experience, index) => {
-                        const isLeft = index % 2 === 0;
+                <div ref={timelineRef} className="relative">
+                    <svg
+                        className="pointer-events-none absolute left-0 top-0 z-0 overflow-visible"
+                        width={svgSize.width}
+                        height={svgSize.height}
+                        viewBox={`0 0 ${svgSize.width} ${svgSize.height}`}
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d={svgPath}
+                            stroke="rgba(251, 146, 60, 0.18)"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                        <path
+                            ref={pathRef}
+                            d={svgPath}
+                            stroke="rgb(234, 88, 12)"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
 
-                        return (
-                            <div
-                                key={`${experience.role}-${experience.company}`}
-                                className={`relative grid items-center gap-8 md:grid-cols-[1fr_72px_1fr] ${isLeft ? '' : 'md:[&_.experience-card]:col-start-3'
-                                    }`}
-                            >
+                    {dots.map((dot, index) => (
+                        <div
+                            key={`${dot.x}-${dot.y}-${index}`}
+                            className="experience-dot pointer-events-none absolute z-20 flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 shadow-lg shadow-orange-600/20"
+                            style={{
+                                left: dot.x,
+                                top: dot.y,
+                                transform: 'translate(-50%, -50%)',
+                            }}
+                        >
+                            <div className="h-3 w-3 rounded-full bg-white" />
+                        </div>
+                    ))}
+
+                    <div className="relative z-10 space-y-16 md:space-y-20">
+                        {experiences.map((experience, index) => {
+                            const isLeft = index % 2 === 0;
+
+                            return (
                                 <article
-                                    className={`experience-card rounded-[1.75rem] border border-orange-100 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl ${isLeft ? 'md:col-start-1' : 'md:col-start-3'
+                                    key={`${experience.role}-${experience.company}`}
+                                    ref={(element) => {
+                                        cardRefs.current[index] = element;
+                                    }}
+                                    className={`experience-card relative rounded-[1.75rem] border border-orange-100 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl md:w-[calc(50%-3rem)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'
                                         }`}
                                 >
                                     <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -233,7 +437,9 @@ export function ExperienceTimeline() {
                                         {experience.achievements.map((achievement) => (
                                             <li key={achievement} className="flex gap-3 text-sm text-gray-700">
                                                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-600" />
-                                                <span className="font-light leading-relaxed">{achievement}</span>
+                                                <span className="font-light leading-relaxed">
+                                                    {achievement}
+                                                </span>
                                             </li>
                                         ))}
                                     </ul>
@@ -249,13 +455,9 @@ export function ExperienceTimeline() {
                                         ))}
                                     </div>
                                 </article>
-
-                                <div className="experience-dot absolute left-0 top-8 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-orange-600 shadow-lg shadow-orange-600/20 md:static md:col-start-2 md:mx-auto">
-                                    <div className="h-3 w-3 rounded-full bg-white" />
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </section>
