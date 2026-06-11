@@ -27,13 +27,13 @@ export function ProjectsSection() {
                     className="space-y-8"
                 >
                     <motion.div variants={fadeUp}>
-                        <ProjectCard {...featuredProject} />
+                        <ProjectCard {...featuredProject} index={0} />
                     </motion.div>
 
                     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {projects.map((project) => (
+                        {projects.map((project, index) => (
                             <motion.div key={project.title} variants={fadeUp}>
-                                <ProjectCard {...project} />
+                                <ProjectCard {...project} index={index + 1} />
                             </motion.div>
                         ))}
                     </div>
