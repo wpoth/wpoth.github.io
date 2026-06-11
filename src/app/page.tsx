@@ -114,7 +114,7 @@ export default function Home() {
     links: [
       {
         label: 'View live project',
-        href: 'https://vibeforge-brown.vercel.app/',
+        href: 'https://vibeforge-music.vercel.app/',
       },
       {
         label: 'View code',
