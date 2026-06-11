@@ -147,7 +147,7 @@ export function ExperienceTimeline() {
     const sectionRef = useRef<HTMLElement | null>(null);
     const timelineRef = useRef<HTMLDivElement | null>(null);
     const pathRef = useRef<SVGPathElement | null>(null);
-    const cardRefs = useRef<Array<HTMLElement | null>>([]);
+    const cardShellRefs = useRef<Array<HTMLElement | null>>([]);
 
     const [svgPath, setSvgPath] = useState('');
     const [dots, setDots] = useState<DotPosition[]>([]);
@@ -167,7 +167,7 @@ export function ExperienceTimeline() {
             const timelineRect = timeline.getBoundingClientRect();
             const isDesktop = window.innerWidth >= 768;
 
-            const cards: CardBounds[] = cardRefs.current
+            const cards: CardBounds[] = cardShellRefs.current
                 .filter(Boolean)
                 .map((card) => {
                     const rect = card!.getBoundingClientRect();
@@ -261,32 +261,34 @@ export function ExperienceTimeline() {
                         },
                     });
 
-                    gsap.utils.toArray<HTMLElement>('.experience-card').forEach((card, index) => {
-                        const direction = index % 2 === 0 ? -70 : 70;
+                    gsap.utils
+                        .toArray<HTMLElement>('.experience-card-content')
+                        .forEach((card, index) => {
+                            const direction = index % 2 === 0 ? -70 : 70;
 
-                        gsap.fromTo(
-                            card,
-                            {
-                                opacity: 0,
-                                x: window.innerWidth >= 768 ? direction : 0,
-                                y: 44,
-                                scale: 0.97,
-                            },
-                            {
-                                opacity: 1,
-                                x: 0,
-                                y: 0,
-                                scale: 1,
-                                duration: 0.85,
-                                ease: 'power3.out',
-                                scrollTrigger: {
-                                    trigger: card,
-                                    start: 'top 82%',
-                                    toggleActions: 'play none none reverse',
+                            gsap.fromTo(
+                                card,
+                                {
+                                    opacity: 0,
+                                    x: window.innerWidth >= 768 ? direction : 0,
+                                    y: 44,
+                                    scale: 0.97,
                                 },
-                            }
-                        );
-                    });
+                                {
+                                    opacity: 1,
+                                    x: 0,
+                                    y: 0,
+                                    scale: 1,
+                                    duration: 0.85,
+                                    ease: 'power3.out',
+                                    scrollTrigger: {
+                                        trigger: card,
+                                        start: 'top 82%',
+                                        toggleActions: 'play none none reverse',
+                                    },
+                                }
+                            );
+                        });
 
                     gsap.utils.toArray<HTMLElement>('.experience-dot').forEach((dot) => {
                         gsap.fromTo(
@@ -401,58 +403,63 @@ export function ExperienceTimeline() {
                                 <article
                                     key={`${experience.role}-${experience.company}`}
                                     ref={(element) => {
-                                        cardRefs.current[index] = element;
+                                        cardShellRefs.current[index] = element;
                                     }}
-                                    className={`experience-card relative rounded-[1.75rem] border border-orange-100 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl md:w-[calc(50%-3rem)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'
+                                    className={`relative md:w-[calc(50%-3rem)] ${isLeft ? 'md:mr-auto' : 'md:ml-auto'
                                         }`}
                                 >
-                                    <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                                        <div>
-                                            <p className="mb-2 inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-orange-700">
-                                                {experience.type}
-                                            </p>
-                                            <h3 className="text-2xl font-semibold text-black">
-                                                {experience.role}
-                                            </h3>
-                                            <p className="mt-1 text-base font-light text-orange-700">
-                                                {experience.company}
-                                            </p>
+                                    <div className="experience-card-content rounded-[1.75rem] border border-orange-100 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl">
+                                        <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                            <div>
+                                                <p className="mb-2 inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-medium uppercase tracking-[0.16em] text-orange-700">
+                                                    {experience.type}
+                                                </p>
+                                                <h3 className="text-2xl font-semibold text-black">
+                                                    {experience.role}
+                                                </h3>
+                                                <p className="mt-1 text-base font-light text-orange-700">
+                                                    {experience.company}
+                                                </p>
+                                            </div>
+
+                                            <div className="text-left sm:text-right">
+                                                <p className="text-sm font-medium text-black">
+                                                    {experience.period}
+                                                </p>
+                                                <p className="text-sm font-light text-gray-500">
+                                                    {experience.location}
+                                                </p>
+                                            </div>
                                         </div>
 
-                                        <div className="text-left sm:text-right">
-                                            <p className="text-sm font-medium text-black">
-                                                {experience.period}
-                                            </p>
-                                            <p className="text-sm font-light text-gray-500">
-                                                {experience.location}
-                                            </p>
-                                        </div>
-                                    </div>
+                                        <p className="mb-5 font-light leading-relaxed text-gray-700">
+                                            {experience.description}
+                                        </p>
 
-                                    <p className="mb-5 font-light leading-relaxed text-gray-700">
-                                        {experience.description}
-                                    </p>
+                                        <ul className="mb-6 space-y-3">
+                                            {experience.achievements.map((achievement) => (
+                                                <li
+                                                    key={achievement}
+                                                    className="flex gap-3 text-sm text-gray-700"
+                                                >
+                                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-600" />
+                                                    <span className="font-light leading-relaxed">
+                                                        {achievement}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
 
-                                    <ul className="mb-6 space-y-3">
-                                        {experience.achievements.map((achievement) => (
-                                            <li key={achievement} className="flex gap-3 text-sm text-gray-700">
-                                                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-600" />
-                                                <span className="font-light leading-relaxed">
-                                                    {achievement}
+                                        <div className="flex flex-wrap gap-2">
+                                            {experience.technologies.map((technology) => (
+                                                <span
+                                                    key={technology}
+                                                    className="rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-sm font-light text-orange-700"
+                                                >
+                                                    {technology}
                                                 </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                    <div className="flex flex-wrap gap-2">
-                                        {experience.technologies.map((technology) => (
-                                            <span
-                                                key={technology}
-                                                className="rounded-full border border-orange-100 bg-orange-50 px-3 py-1 text-sm font-light text-orange-700"
-                                            >
-                                                {technology}
-                                            </span>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </article>
                             );
