@@ -6,6 +6,7 @@ import { motion, easeOut } from 'framer-motion';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
 import { ProjectCard } from '@/components/ProjectCard';
+import { ExperienceTimeline } from '@/components/ExperienceTimeline';
 
 export function useTypewriter(text: string, speed: number = 20) {
   const [output, setOutput] = useState("");
@@ -114,7 +115,7 @@ export default function Home() {
     links: [
       {
         label: 'View live project',
-        href: 'https://vibeforge-music.vercel.app/',
+        href: 'https://vibeforge-brown.vercel.app/',
       },
       {
         label: 'View code',
@@ -281,6 +282,8 @@ export default function Home() {
           </motion.div>
         </Container>
       </section>
+
+      <ExperienceTimeline />
 
       {/* About Section */}
       <section id="about" className="py-32 bg-gray-50">
