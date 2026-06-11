@@ -1,26 +1,11 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import type { Project } from '@/data/portfolio';
 
-interface ProjectLink {
-  label: string;
-  href: string;
-}
+type ProjectCardProps = Project;
 
-interface ProjectCardProps {
-  title: string;
-  description: string;
-  image?: string;
-  tags: string[];
-  link?: string;
-  links?: ProjectLink[];
-  featured?: boolean;
-  eyebrow?: string;
-  highlights?: string[];
-}
-
-export const ProjectCard: React.FC<ProjectCardProps> = ({
+export function ProjectCard({
   title,
   description,
   image,
@@ -30,17 +15,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   featured = false,
   eyebrow,
   highlights,
-}) => {
+}: ProjectCardProps) {
   const cardClassName = featured
-    ? "group relative overflow-hidden rounded-[2rem] border border-orange-200 bg-gradient-to-br from-orange-50 via-white to-warm-gray-50 shadow-sm transition-all duration-300"
-    : "group relative overflow-hidden rounded-2xl border border-warm-gray-200 bg-white shadow-sm transition-all duration-300";
+    ? 'group relative overflow-hidden rounded-[2rem] border border-orange-200 bg-gradient-to-br from-orange-50 via-white to-warm-gray-50 shadow-sm transition-all duration-300'
+    : 'group relative overflow-hidden rounded-2xl border border-warm-gray-200 bg-white shadow-sm transition-all duration-300';
 
-  const CardContent = (
+  const cardContent = (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
       whileHover={{ y: -8 }}
       className={cardClassName}
     >
@@ -62,7 +47,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
       )}
 
-      <div className={featured ? "relative p-8 md:p-10" : "relative p-8"}>
+      <div className={featured ? 'relative p-8 md:p-10' : 'relative p-8'}>
         {eyebrow && (
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.24em] text-orange-600">
             {eyebrow}
@@ -72,8 +57,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <motion.h3
           className={
             featured
-              ? "mb-4 text-3xl font-semibold text-black md:text-4xl"
-              : "mb-3 text-2xl font-semibold text-black"
+              ? 'mb-4 text-3xl font-semibold text-black md:text-4xl'
+              : 'mb-3 text-2xl font-semibold text-black'
           }
           whileHover={{ x: 4 }}
         >
@@ -83,8 +68,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <p
           className={
             featured
-              ? "mb-6 max-w-3xl text-lg font-light leading-relaxed text-warm-gray-800"
-              : "mb-6 font-light leading-relaxed text-black"
+              ? 'mb-6 max-w-3xl text-lg font-light leading-relaxed text-warm-gray-800'
+              : 'mb-6 font-light leading-relaxed text-black'
           }
         >
           {description}
@@ -127,8 +112,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 rel="noopener noreferrer"
                 className={
                   index === 0
-                    ? "inline-flex items-center justify-center rounded-full bg-orange-600 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-700"
-                    : "inline-flex items-center justify-center rounded-full border border-orange-200 bg-white px-5 py-3 text-sm font-medium text-orange-700 transition-colors hover:border-orange-300 hover:bg-orange-50"
+                    ? 'inline-flex items-center justify-center rounded-full bg-orange-600 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-700'
+                    : 'inline-flex items-center justify-center rounded-full border border-orange-200 bg-white px-5 py-3 text-sm font-medium text-orange-700 transition-colors hover:border-orange-300 hover:bg-orange-50'
                 }
               >
                 {projectLink.label}
@@ -143,10 +128,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   if (link && (!links || links.length === 0)) {
     return (
       <a href={link} target="_blank" rel="noopener noreferrer">
-        {CardContent}
+        {cardContent}
       </a>
     );
   }
 
-  return CardContent;
-};
+  return cardContent;
+}

@@ -1,46 +1,48 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useMotionValueEvent,
-  AnimatePresence,
-} from "framer-motion";
-import { Container } from "./Container";
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import { Container } from '@/components/Container';
+import { navItems } from '@/lib/navigation';
 
-export const Navbar: React.FC = () => {
-  const [activeSection, setActiveSection] = useState("hero");
+const drawerVariants = {
+  hidden: { x: '100%' },
+  visible: {
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 260,
+      damping: 25,
+    },
+  },
+  exit: {
+    x: '100%',
+    transition: { duration: 0.2 },
+  },
+} as const;
+
+function scrollToSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
+
+export function Navbar() {
+  const [activeSection, setActiveSection] = useState('hero');
   const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [underline, setUnderline] = useState({ left: 0, width: 0 });
 
   const navRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const lastScrollY = useRef(0);
-
   const { scrollY, scrollYProgress } = useScroll();
 
-  const navItems = [
-    { label: "Home", id: "hero" },
-    { label: "Projects", id: "projects" },
-    { label: "About", id: "about" },
-    { label: "Contact", id: "contact" },
-  ];
-
-  // ---------------------------
-  // ACTIVE SECTION TRACKING
-  // ---------------------------
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition =
-        window.scrollY + window.innerHeight / 3;
-
-      let current = "hero";
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      let current = 'hero';
 
       for (const item of navItems) {
-        const el = document.getElementById(item.id);
-        if (!el) continue;
-
-        if (scrollPosition >= el.offsetTop) {
+        const section = document.getElementById(item.id);
+        if (section && scrollPosition >= section.offsetTop) {
           current = item.id;
         }
       }
@@ -48,20 +50,28 @@ export const Navbar: React.FC = () => {
       setActiveSection(current);
     };
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    return () =>
-      window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ---------------------------
-  // NAV HIDE ON SCROLL VELOCITY
-  // ---------------------------
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useEffect(() => {
+    const activeButton = navRefs.current[activeSection];
+    const parent = activeButton?.parentElement;
+
+    if (!activeButton || !parent) return;
+
+    const parentRect = parent.getBoundingClientRect();
+    const buttonRect = activeButton.getBoundingClientRect();
+
+    setUnderline({
+      left: buttonRect.left - parentRect.left,
+      width: buttonRect.width,
+    });
+  }, [activeSection]);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
     const velocity = latest - lastScrollY.current;
 
     if (velocity > 10 && latest > 150) {
@@ -73,138 +83,63 @@ export const Navbar: React.FC = () => {
     lastScrollY.current = latest;
   });
 
-  // ---------------------------
-  // UNDERLINE POSITIONING
-  // ---------------------------
-  const [underline, setUnderline] = useState({
-    left: 0,
-    width: 0,
-  });
-
-  useEffect(() => {
-    const el = navRefs.current[activeSection];
-    const parent = el?.parentElement;
-
-    if (!el || !parent) return;
-
-    const parentRect = parent.getBoundingClientRect();
-    const elRect = el.getBoundingClientRect();
-
-    setUnderline({
-      left: elRect.left - parentRect.left,
-      width: elRect.width,
-    });
-  }, [activeSection]);
-
-  // ---------------------------
-  // SCROLL TO SECTION
-  // ---------------------------
-  const scrollToSection = (id: string) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth" });
-
+  const handleNavigate = (id: string) => {
+    scrollToSection(id);
     setMobileOpen(false);
   };
 
-  // ---------------------------
-  // DRAWER ANIMATION
-  // ---------------------------
-  const drawerVariants = {
-    hidden: { x: "100%" },
-    visible: {
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 25,
-      },
-    },
-    exit: {
-      x: "100%",
-      transition: { duration: 0.2 },
-    },
-  } as const;
-
   return (
     <>
-      {/* --------------------------- */}
-      {/* SCROLL PROGRESS BAR */}
-      {/* --------------------------- */}
       <motion.div
-        style={{
-          scaleX: scrollYProgress,
-          transformOrigin: "0%",
-        }}
+        style={{ scaleX: scrollYProgress, transformOrigin: '0%' }}
         className="fixed left-0 top-0 z-[60] h-[2px] w-full bg-orange-500"
       />
 
-      {/* --------------------------- */}
-      {/* NAVBAR */}
-      {/* --------------------------- */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: hidden ? -100 : 0, opacity: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 30,
-        }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md"
       >
         <Container className="relative flex h-16 items-center justify-between">
-          {/* LOGO */}
-          <div
-            onClick={() => scrollToSection("hero")}
+          <button
+            type="button"
+            onClick={() => handleNavigate('hero')}
             className="cursor-pointer bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-2xl font-light text-transparent"
           >
             Portfolio
-          </div>
+          </button>
 
-          {/* DESKTOP NAV */}
           <div className="relative hidden items-center gap-10 md:flex">
             {navItems.map((item) => (
               <motion.button
                 key={item.id}
-                ref={(el) => {
-                  navRefs.current[item.id] = el;
+                ref={(element) => {
+                  navRefs.current[item.id] = element;
                 }}
                 whileHover={{ y: -2 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 25,
-                }}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative font-light transition-colors ${
-                  activeSection === item.id
-                    ? "text-orange-500"
-                    : "text-black"
-                }`}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                onClick={() => handleNavigate(item.id)}
+                className={`relative font-light transition-colors ${activeSection === item.id ? 'text-orange-500' : 'text-black'
+                  }`}
               >
                 {item.label}
               </motion.button>
             ))}
 
-            {/* UNDERLINE */}
             <motion.div
               className="absolute bottom-0 h-[2px] bg-orange-500"
-              animate={{
-                left: underline.left,
-                width: underline.width,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-              }}
+              animate={underline}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             />
           </div>
 
-          {/* MOBILE BUTTON */}
           <button
-            className="flex flex-col gap-1 md:hidden"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(true)}
+            className="flex flex-col gap-1 md:hidden"
           >
             <span className="h-[2px] w-6 bg-black" />
             <span className="h-[2px] w-6 bg-black" />
@@ -213,9 +148,6 @@ export const Navbar: React.FC = () => {
         </Container>
       </motion.nav>
 
-      {/* --------------------------- */}
-      {/* MOBILE DRAWER */}
-      {/* --------------------------- */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -236,22 +168,21 @@ export const Navbar: React.FC = () => {
             >
               <div className="flex items-center justify-between border-b p-6">
                 <span className="text-lg font-light">Menu</span>
-                <button onClick={() => setMobileOpen(false)}>
+                <button type="button" onClick={() => setMobileOpen(false)} aria-label="Close menu">
                   ✕
                 </button>
               </div>
 
               <div className="flex flex-col gap-6 p-6">
                 {navItems.map((item) => (
-                  <motion.button
+                  <button
                     key={item.id}
-                    onClick={() =>
-                      scrollToSection(item.id)
-                    }
+                    type="button"
+                    onClick={() => handleNavigate(item.id)}
                     className="text-left text-lg font-light"
                   >
                     {item.label}
-                  </motion.button>
+                  </button>
                 ))}
               </div>
             </motion.div>
@@ -260,4 +191,4 @@ export const Navbar: React.FC = () => {
       </AnimatePresence>
     </>
   );
-};
+}
